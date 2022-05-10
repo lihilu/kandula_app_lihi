@@ -5,19 +5,19 @@ pipeline {
     }
     agent any
 
-    stage {
+    stages {
         stage('checkout source') {
-            step {
-                git 'https://github.com/lihilu/kandule_app_lihi.git'
+            steps {
+                git branch: 'main', credentialsId: 'Lihi.opsschool.jenkins', url: 'https://github.com/lihilu/kandule_app_lihi.git'
             }
         }
         stage ('Build image') {
             environment {
                 registryCredentials= 'lihi dockerhub'
             }
-            step {
+            steps {
                 script {
-                    docker.withRegistry('https://registry.docker.com', registryCredentials) {
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredentials) {
                         dockerImage.push("latest")
                     }
                 }
