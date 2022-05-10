@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export PYTHONUNBUFFERED=1
+
+if [ "${FLASK_ENV}" == "development" ]; then
+  echo "Running in development mode"
+  export FLASK_APP="kandula-test"
+  export SECRET_KEY="kandula-test"
+fi
+
+python run.py

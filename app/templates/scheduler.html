@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2> 📆 Instance Shutdown Scheduler </h2>
+<article class="media content-section">
+    <div class="media-body">
+        <table cellpadding="10">
+            <thead>
+            <td><h4>Instance Id</h4></td>
+            <td><h4>Next Expected Shutdown</h4></td>
+            <td></td>
+            </thead>
+            {% for instance in scheduled_instances %}
+            <form action="{{ url_for('scheduler') }}" method="post">
+                <input type="hidden" id="instanceIdToRemove" name="instanceIdToRemove" value="{{ instance.Id }}">
+                <input type="hidden" id="instanceScheduleAction" name="instanceScheduleAction" value="delete">
+                <tr>
+                    <td><strong>{{ instance.Id }}</strong></td>
+                    <td>{{ instance.DailyShutdownHour | today_scheduling() }}</td>
+                    <td>
+                        <button class="btn small"
+                                title="Remove scheduled shutdown of instance"
+                                data-toggle="tooltip">❌
+                        </button>
+                    </td>
+                </tr>
+            </form>
+            {% endfor %}
+        </table>
+        <br>
+        <br>
+        <div>
+            <form action="{{ url_for('scheduler') }}" method="post">
+                <input type="hidden" id="instanceScheduleAction" name="instanceScheduleAction" value="create">
+                <label for="instanceId">Schedule Instance ID </label>
+                <input type="text" id="instanceId" name="instanceId" value="{{ request.args.get('instanceId') }}">
+                <label for="shutdownHour"> to shutdown everyday at </label>
+                <input type="time" id="shutdownHour" name="shutdownHour"
+                       min="00:00" max="23:00" step="3600" value="12:00" required>
+                <input class="btn btn-primary btn-lg" type="submit" value="Schedule!">
+            </form>
+        </div>
+    </div>
+</article>
+{% endblock content %}

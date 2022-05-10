@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2> Application Health </h2>
+<article class="media content-section">
+    <div class="media-body">
+        <table cellpadding="10">
+            {% for check in healthchecks %}
+            <tr>
+                <td><strong>{{ check.Name }}</strong></td>
+                <td>
+                    {% if check.Name == 'machine-time' %}
+                    {{ check.Value | format_datetime() }}
+                    {% elif check.Value == true %}
+                    ✅
+                    {% else %}
+                    ❌
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</article>
+{% endblock content %}

@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="content-section mt-2">
+    Shows instances details and provides instance actions and filters
+</div>
+
+<article class="media content-section">
+    <div class="media-body">
+        <div class="container">
+            <div class="panel-group">
+                {% for instance in instances %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="float-right">
+                            <form>
+                                <input type="hidden" id="instanceId" name="instanceId" value="{{ instance.Id }}">
+                                 <button class="btn small"
+                                         title="Schedule instance to stop at a given hour"
+                                         data-toggle="tooltip"
+                                        formaction="{{ url_for('scheduler') }}">⏱️</button>
+                                <button class="btn small"
+                                        title="Start instance"
+                                         data-toggle="tooltip"
+                                        formaction="{{ url_for('instance_actions', instance_id=instance.Id, instance_action='start') }}">⏩</button>
+                                <button class="btn small flashes"
+                                        title="Stop instance"
+                                         data-toggle="tooltip"
+                                        formaction="{{ url_for('instance_actions', instance_id=instance.Id, instance_action='stop') }}">⏹</button>
+                                <button class="btn small"
+                                        title="Terminate instance"
+                                         data-toggle="tooltip"
+                                        formaction="{{ url_for('instance_actions', instance_id=instance.Id, instance_action='terminate') }}">❌</button>
+
+                            </form>
+                        </div>
+                        <h3 class="panel-title">
+                            <a data-toggle="collapse" href="#{{ instance.Id }}">
+                                {% if (instance.Tags is defined) and instance.Tags %}
+                                    {% for tag in instance.Tags %}
+                                    {% if tag.Key == "Name" or tag.Key == "name"%}
+                                        {{ tag.Value }}
+                                    {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    {{ instance.Id }}
+                                {% endif %}
+                            </a>
+                        </h3>
+
+                    </div>
+                    <div id="{{ instance.Id }}" class="panel-collapse collapse">
+                        <div class="panel-body p-3 mb-2 bg-light text-dark">
+                            <p class="article-title"><strong>Cloud:</strong> {{ instance.Cloud }}</p>
+                            <p class="article-title"><strong>Region:</strong> {{ instance.Region }}</p>
+                            <p class="article-title"><strong>ID:</strong> {{ instance.Id }}</p>
+                            <p class="article-title"><strong>Type:</strong> {{ instance.Type }}</p>
+                            <p class="article-title"><strong>Image ID:</strong> {{ instance.ImageId }}</p>
+                            <p class="article-title"><strong>Launch Time:</strong> {{ instance.LaunchTime }}</p>
+                            <p class="article-title"><strong>State:</strong> {{ instance.State }}</p>
+                            {% if instance.State != "running" %}
+                                <p class="article-title"><strong>State Reason:</strong> {{ instance.StateReason }}</p>
+                            {% endif %}
+                            <p class="article-title"><strong>Subnet ID:</strong> {{ instance.SubnetId }}</p>
+                            <p class="article-title"><strong>Vpc ID:</strong> {{ instance.VpcId }}</p>
+                            <p class="article-title"><strong>Mac Address:</strong> {{ instance.MacAddress }}</p>
+                            <p class="article-title"><strong>Network Interface ID:</strong> {{ instance.NetworkInterfaceId }}</p>
+                            <p class="article-title"><strong>Private DNS Name:</strong> {{ instance.PrivateDnsName }}</p>
+                            <p class="article-title"><strong>Private IP Address:</strong> {{ instance.PrivateIpAddress }}</p>
+                            <p class="article-title"><strong>Public DNS Name:</strong> {{ instance.PublicDnsName }}</p>
+                            <p class="article-title"><strong>Public IP Address:</strong> {{ instance.PublicIpAddress }}</p>
+                            <p class="article-title"><strong>Root Device Name:</strong> {{ instance.RootDeviceName }}</p>
+                            <p class="article-title"><strong>Root Device Type:</strong> {{ instance.RootDeviceType }}</p>
+                            <p class="article-title"><strong>Security Groups:</strong>
+                                {% for sg in instance.SecurityGroups %}
+                                    {{ sg.GroupName }}
+                                {% endfor %}
+                            </p>
+                            <p class="article-title"><strong>Tags:</strong>
+                                {% for tag in instance.Tags %}
+                                    <p><small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ tag.Key }}: {{ tag.Value }}</small></p>
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</article>
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+{% endblock content %}
