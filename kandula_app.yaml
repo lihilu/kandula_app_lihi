@@ -18,7 +18,7 @@ spec:
            value: development
        envFrom:
          - secretRef:
-              name: mysecret
+              name: secret
 
 ---
 apiVersion: v1
