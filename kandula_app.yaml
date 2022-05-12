@@ -16,9 +16,8 @@ spec:
        env:
          - name: FLASK_ENV
            value: development
-       envFrom:
-         - secretRef:
-              name: secret
+       secret:
+         - name: secret
 
 ---
 apiVersion: v1
