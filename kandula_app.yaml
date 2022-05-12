@@ -14,11 +14,14 @@ spec:
            name: http
            protocol: TCP
        env:
-         - name: FLASK_ENV
-           value: development
+        - name: AWS_DEFAULT_REGION
+          value: us-east-1
+        - name: FLASK_ENV
+          value: development
        envFrom:
          - secretRef:
-              name: secret
+              AWS_ACCESS_KEY_ID: secret
+              AWS_SECRET_ACCESS_KEY: secret
 
 ---
 apiVersion: v1
