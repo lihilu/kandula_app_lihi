@@ -13,7 +13,11 @@ spec:
          - containerPort: 5000
            name: http
            protocol: TCP
-
+       env:
+        - name: AWS_DEFAULT_REGION
+          value: us-east-1
+        - name: FLASK_ENV
+          value: development
 
 ---
 apiVersion: v1
