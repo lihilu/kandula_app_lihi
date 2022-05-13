@@ -20,12 +20,12 @@ spec:
            valueFrom:
              secretKeyRef:
               name: secretawsid
-              key: secretawsid
+              key: AWS_ACCESS_KEY_ID
          - name: AWS_SECRET_ACCESS_KEY
            valueFrom:
              secretKeyRef:
               name: secretawskey
-              key: secretawskey
+              key: AWS_SECRET_ACCESS_KEY
          - name: AWS_DEFAULT_REGION
            value: us-east-1
 
