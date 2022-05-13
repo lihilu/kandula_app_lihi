@@ -13,9 +13,15 @@ spec:
          - containerPort: 5000
            name: http
            protocol: TCP
+          - containerPort: 5000
+           name: http
+           protocol: TCP
        env:
+         - name: FLASK_ENV
+           value: development
        envFrom:
-         - secretName: secret
+         - secretRef:
+              name: mysecret
 
 ---
 apiVersion: v1
