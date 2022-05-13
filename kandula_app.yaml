@@ -18,7 +18,7 @@ spec:
            value: development
        envFrom:
          - secretRef:
-              name: secret
+              name: opsschool-sa-token-tfcpg
 
 ---
 apiVersion: v1
