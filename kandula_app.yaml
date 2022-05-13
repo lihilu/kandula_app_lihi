@@ -15,8 +15,7 @@ spec:
            protocol: TCP
        env:
        envFrom:
-         - secretRef:
-              name: secret
+         - secretName: secret
 
 ---
 apiVersion: v1
