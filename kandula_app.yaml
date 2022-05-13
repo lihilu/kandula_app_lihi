@@ -16,10 +16,16 @@ spec:
        env:
          - name: FLASK_ENV
            value: development
-       envFrom:
-         - secretRef:
+         - name: AWS_ACCESS_KEY_ID
+           valueFrom:
+           secretKeyRef:
               name: secretawsid
+         - name: AWS_SECRET_ACCESS_KEY
+           valueFrom:
+           secretKeyRef:
               name: secretawskey
+         - name: AWS_DEFAULT_REGION
+           value: us-east-1
 
 ---
 apiVersion: v1
