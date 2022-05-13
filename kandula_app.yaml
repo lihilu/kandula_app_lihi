@@ -18,7 +18,8 @@ spec:
            value: development
        envFrom:
          - secretRef:
-              name: secret
+              name: secretawsid
+              name: secretawskey
 
 ---
 apiVersion: v1
