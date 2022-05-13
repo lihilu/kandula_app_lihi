@@ -13,9 +13,10 @@ spec:
          - containerPort: 5000
            name: http
            protocol: TCP
+       env:
        envFrom:
          - secretRef:
-              name: mysecret
+              name: secret
 
 ---
 apiVersion: v1
