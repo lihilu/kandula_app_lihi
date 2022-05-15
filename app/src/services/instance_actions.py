@@ -12,12 +12,13 @@ class InstanceActions:
 
     def stop_instance(self, instance_id):
         responses = self.ec2_client.stop_instances(InstanceIds=[instance_id])
-        return responses['ResponseMetadata']['HTTPStatusCode']
+        return responses['ResponseMetadata']['HTTPStatusCode'] == 200
 
 
     def terminate_instance(self, instance_id):
         responses = self.ec2_client.terminate_instances(InstanceIds=[instance_id], DryRun=True)
-        return responses['ResponseMetadata']['HTTPStatusCode']
+        return responses['ResponseMetadata']['HTTPStatusCode'] 
+
 
     def action_selector(self, instance_action):
         return {
