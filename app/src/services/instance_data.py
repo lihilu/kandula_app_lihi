@@ -65,7 +65,7 @@ class InstanceData:
             single_instance['LaunchTime'] = instance['LaunchTime']
             single_instance['State'] = instance['State']['Name']
             if instance['State']['Name'] == 'running':
-                single_instance['StateReason'] = None
+                single_instance['StateReason'] = 'None'
             else:
                 single_instance['StateReason'] = instance['StateReason']['Message']
           #  single_instance['SubnetId'] = instance['SubnetId']
