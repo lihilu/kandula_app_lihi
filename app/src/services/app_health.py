@@ -1,6 +1,6 @@
 from boto3 import client
+    # Describe instances
 ec2_client = client('ec2', region_name="us-east-1")
-
 def get_machine_time():
     return 1602824750094  # No need to implement at the moment
 
@@ -11,6 +11,7 @@ def check_aws_connection():
         return True
     else:
         return False
+
 
 def check_db_connection():
     # TODO: implement real select query to db. If successful, return true. otherwise return False

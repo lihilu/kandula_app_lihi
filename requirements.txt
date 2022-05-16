@@ -3,6 +3,8 @@ flask
 bootstrap-flask
 pygithub
 pyyaml
+pytest-flask
+pytest-cov
 docker
 BeautifulSoup4
 moto

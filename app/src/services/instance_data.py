@@ -1,6 +1,4 @@
 from boto3 import client
-import boto3
-import botocore
 
 SAMPLE_INSTANCE_DATA = {
     'Instances': [
