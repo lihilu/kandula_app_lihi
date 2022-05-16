@@ -14,8 +14,9 @@ class InstanceActions:
         return responses['ResponseMetadata']['HTTPStatusCode']
 
     def terminate_instance(self, instance_id):
-       responses = self.ec2_client.terminate_instances(InstanceIds=[instance_id])
-       return responses['ResponseMetadata']['HTTPStatusCode']
+    #    responses = self.ec2_client.terminate_instances(InstanceIds=[instance_id])
+    #    return responses['ResponseMetadata']['HTTPStatusCode']
+        pass
 
     def action_selector(self, instance_action):
         return {
