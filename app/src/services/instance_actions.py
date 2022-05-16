@@ -13,11 +13,8 @@ class InstanceActions:
         pass
 
     def stop_instance(self, instance_id):
-        # TODO: Implement 'stop_instance' logic here using `self.ec2_client` as your boto client
-        #       the `self.ec2_client` is an object that is returned from doing `boto3.client('ec2')` as you can
-        #       probably find in many examples on the web
-        #       To read more on how to use Boto for EC2 look for the original Boto documentation
-        pass
+        responses = self.ec2_client.stop_instances(InstanceIds=[instance_id])
+        return responses['ResponseMetadata']['HTTPStatusCode']
 
     def terminate_instance(self, instance_id):
         # TODO: Implement 'terminate_instance' logic here using `self.ec2_client` as your boto client
