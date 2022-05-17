@@ -85,7 +85,7 @@ class InstanceData:
             except:
                 single_instance['SubnetId'] = 'None'
             if single_instance['VpcId']:
-                single_instance['SubnetId'] = instance['VpcId']
+                single_instance['VpcId'] = instance['VpcId']
             else:
                 single_instance['VpcId'] = 'None' 
             if single_instance['NetworkInterfaceId']:
