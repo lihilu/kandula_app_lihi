@@ -82,12 +82,10 @@ class InstanceData:
                 single_instance['StateReason'] = instance['StateReason']['Message']
             try: 
                 single_instance['SubnetId'] = instance['SubnetId']
+                single_instance['VpcId'] = instance['VpcId']
             except:
                 single_instance['SubnetId'] = 'None'
-            if single_instance['VpcId']:
-                single_instance['VpcId'] = instance['VpcId']
-            else:
-                single_instance['VpcId'] = 'None' 
+                single_instance['VpcId'] = 'None'                
             if single_instance['NetworkInterfaceId']:
                 single_instance['MacAddress'] = instance['NetworkInterfaces'][0]['MacAddress']
                 single_instance['NetworkInterfaceId'] = instance['NetworkInterfaces'][0]['NetworkInterfaceId']
