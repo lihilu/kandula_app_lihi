@@ -70,7 +70,7 @@ class InstanceData:
             instance = each_response['Instances'][0]
             single_instance={}
             single_instance['Cloud'] = 'aws'
-            single_instance['Region'] = response.meta.region_name
+            single_instance['Region'] = 'us-east-1'
             single_instance['Id'] = instance['InstanceId']
             single_instance['Type'] = instance['InstanceType']
             single_instance['ImageId'] = instance['ImageId']
