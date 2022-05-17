@@ -60,55 +60,54 @@ class InstanceData:
         #       NOTE: the `self.ec2_client` is an object that is returned from doing `boto3.client('ec2')` as you can
         #       probably find in many examples on the web
         #       To read more on how to use Boto for EC2 look for the original Boto documentation
-        try:
-            response = self.ec2_client.describe_instances()
-        except Exception as e:
-            print (e)
+        response = self.ec2_client.describe_instances()
         response_list = response['Reservations']
         my_instances = {'Instances':[]}
         for each_response in response_list:
             instance = each_response['Instances'][0]
             single_instance={}
-            single_instance['Cloud'] = 'aws'
-            single_instance['Region'] = 'us-east-1'
-            single_instance['Id'] = instance['InstanceId']
-            single_instance['Type'] = instance['InstanceType']
-            single_instance['ImageId'] = instance['ImageId']
-            single_instance['LaunchTime'] = instance['LaunchTime']
-            single_instance['State'] = instance['State']['Name']
-            if instance['State']['Name'] == 'running':
-                single_instance['StateReason'] = 'None'
-            else:
-                single_instance['StateReason'] = instance['StateReason']['Message']
-            try: 
-                single_instance['SubnetId'] = instance['SubnetId']
-                single_instance['VpcId'] = instance['VpcId']
-            except:
-                single_instance['SubnetId'] = 'None'
-                single_instance['VpcId'] = 'None'                
-            if single_instance['NetworkInterfaceId']:
-                single_instance['MacAddress'] = instance['NetworkInterfaces'][0]['MacAddress']
-                single_instance['NetworkInterfaceId'] = instance['NetworkInterfaces'][0]['NetworkInterfaceId']
-            else:
-                single_instance['MacAddress'] ='None'
-                single_instance['NetworkInterfaceId'] = 'None'
-            single_instance['PrivateDnsName'] = instance['PrivateDnsName']
-            try:
-                single_instance['PrivateIpAddress'] = instance['PrivateIpAddress']
-            except:
-                single_instance['PrivateIpAddress'] = 'None'
-            if single_instance['PublicDnsName']:
-                single_instance['PublicDnsName'] = instance['PublicDnsName']
-                single_instance['PublicIpAddress'] = instance['PublicIpAddress']
-            else:
-                single_instance['PublicDnsName'] = 'None'
-                single_instance['PublicIpAddress'] = 'None'
-            single_instance['RootDeviceName'] = instance['RootDeviceName']
-            single_instance['RootDeviceType'] = instance['RootDeviceType']
-            single_instance['SecurityGroups'] = instance['SecurityGroups']
-            single_instance['Tags'] = instance['Tags']
+            if single_instance['State']=='running':
+                single_instance['Cloud'] = 'aws'
+                single_instance['Region'] = 'us-east-1'
+                single_instance['Id'] = instance['InstanceId']
+                single_instance['Type'] = instance['InstanceType']
+                single_instance['ImageId'] = instance['ImageId']
+                single_instance['LaunchTime'] = instance['LaunchTime']
+                single_instance['State'] = instance['State']['Name']
+                if instance['State']['Name'] == 'running':
+                    single_instance['StateReason'] = 'None'
+                else:
+                    single_instance['StateReason'] = instance['StateReason']['Message']
+                try: 
+                    single_instance['SubnetId'] = instance['SubnetId']
+                    single_instance['VpcId'] = instance['VpcId']
+                except:
+                    single_instance['SubnetId'] = 'None'
+                    single_instance['VpcId'] = 'None'                
+                if single_instance['NetworkInterfaceId']:
+                    single_instance['MacAddress'] = instance['NetworkInterfaces'][0]['MacAddress']
+                    single_instance['NetworkInterfaceId'] = instance['NetworkInterfaces'][0]['NetworkInterfaceId']
+                else:
+                    single_instance['MacAddress'] ='None'
+                    single_instance['NetworkInterfaceId'] = 'None'
+                single_instance['PrivateDnsName'] = instance['PrivateDnsName']
+                try:
+                    single_instance['PrivateIpAddress'] = instance['PrivateIpAddress']
+                except:
+                    single_instance['PrivateIpAddress'] = 'None'
+                if single_instance['PublicDnsName']:
+                    single_instance['PublicDnsName'] = instance['PublicDnsName']
+                    single_instance['PublicIpAddress'] = instance['PublicIpAddress']
+                else:
+                    single_instance['PublicDnsName'] = 'None'
+                    single_instance['PublicIpAddress'] = 'None'
+                single_instance['RootDeviceName'] = instance['RootDeviceName']
+                single_instance['RootDeviceType'] = instance['RootDeviceType']
+                single_instance['SecurityGroups'] = instance['SecurityGroups']
+                single_instance['Tags'] = instance['Tags']
 
-            my_instances['Instances'].append(single_instance)
-
+                my_instances['Instances'].append(single_instance)
+            else:
+              continue  
         return my_instances
         # return SAMPLE_INSTANCE_DATA
