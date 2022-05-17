@@ -50,15 +50,27 @@ class InstanceData:
         self.ec2_client = ec2_client
 
     def get_instances(self):
-        response = self.ec2_client.describe_instances()
-        # response = ec2.describe_instances()
+        # TODO: The below JSON should be populated using real instance data (instead of the SAMPLE_INSTANCE_DATA)
+        #       The format of SAMPLE_INSTANCE_DATA (field names and JSON structure)
+        #       must be kept in order to be properly displayed in the application UI
+        #
+        #       Notice that when the machine is running the "StateReason" filed should be set to None
+        #       and will not be shown in the UI
+        #
+        #       NOTE: the `self.ec2_client` is an object that is returned from doing `boto3.client('ec2')` as you can
+        #       probably find in many examples on the web
+        #       To read more on how to use Boto for EC2 look for the original Boto documentation
+        try:
+            response = self.ec2_client.describe_instances()
+        except Exception as e:
+            print (e)
         response_list = response['Reservations']
         my_instances = {'Instances':[]}
         for each_response in response_list:
             instance = each_response['Instances'][0]
             single_instance={}
             single_instance['Cloud'] = 'aws'
-            single_instance['Region'] = 'us-east-1'
+            single_instance['Region'] = response.meta.region_name
             single_instance['Id'] = instance['InstanceId']
             single_instance['Type'] = instance['InstanceType']
             single_instance['ImageId'] = instance['ImageId']
@@ -68,16 +80,30 @@ class InstanceData:
                 single_instance['StateReason'] = 'None'
             else:
                 single_instance['StateReason'] = instance['StateReason']['Message']
-          #  single_instance['SubnetId'] = instance['SubnetId']
-            single_instance['VpcId'] = instance['VpcId']
-            single_instance['MacAddress'] = instance['NetworkInterfaces'][0]['MacAddress']
-            single_instance['NetworkInterfaceId'] = instance['NetworkInterfaces'][0]['NetworkInterfaceId']
+            if single_instance['SubnetId']:
+                single_instance['SubnetId'] = instance['SubnetId']
+            else:
+                single_instance['SubnetId'] = 'None'
+            if single_instance['VpcId']:
+                single_instance['SubnetId'] = instance['VpcId']
+            else:
+                single_instance['VpcId'] = 'None' 
+            if single_instance['NetworkInterfaceId']:
+                single_instance['MacAddress'] = instance['NetworkInterfaces'][0]['MacAddress']
+                single_instance['NetworkInterfaceId'] = instance['NetworkInterfaces'][0]['NetworkInterfaceId']
+            else:
+                single_instance['MacAddress'] ='None'
+                single_instance['NetworkInterfaceId'] = 'None'
             single_instance['PrivateDnsName'] = instance['PrivateDnsName']
-            single_instance['PrivateIpAddress'] = instance['PrivateIpAddress']
-            single_instance['PublicDnsName'] = instance['PublicDnsName']
             try:
-                single_instance['PublicIpAddress'] = instance['PublicIpAddress']
+                single_instance['PrivateIpAddress'] = instance['PrivateIpAddress']
             except:
+                single_instance['PrivateIpAddress'] = 'None'
+            if single_instance['PublicDnsName']:
+                single_instance['PublicDnsName'] = instance['PublicDnsName']
+                single_instance['PublicIpAddress'] = instance['PublicIpAddress']
+            else:
+                single_instance['PublicDnsName'] = 'None'
                 single_instance['PublicIpAddress'] = 'None'
             single_instance['RootDeviceName'] = instance['RootDeviceName']
             single_instance['RootDeviceType'] = instance['RootDeviceType']
