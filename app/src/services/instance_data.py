@@ -80,9 +80,9 @@ class InstanceData:
                 single_instance['StateReason'] = 'None'
             else:
                 single_instance['StateReason'] = instance['StateReason']['Message']
-            if single_instance['SubnetId']:
+            try: 
                 single_instance['SubnetId'] = instance['SubnetId']
-            else:
+            except:
                 single_instance['SubnetId'] = 'None'
             if single_instance['VpcId']:
                 single_instance['SubnetId'] = instance['VpcId']
