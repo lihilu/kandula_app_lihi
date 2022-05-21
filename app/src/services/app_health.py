@@ -1,6 +1,7 @@
 from boto3 import client
-    # Describe instances
-ec2_client = client('ec2', region_name="us-east-1")
+AWS_REGION="us-east-1"
+ec2_client = client('ec2', region_name=AWS_REGION)
+
 def get_machine_time():
     return 1602824750094  # No need to implement at the moment
 
