@@ -6,16 +6,33 @@ class InstanceActions:
         self.ec2_client = ec2_client
 
     def start_instance(self, instance_id):
-        responses = self.ec2_client.start_instances(InstanceIds=[instance_id])
-        return responses['ResponseMetadata']['HTTPStatusCode']
+        result=False
+        try:
+            responses = self.ec2_client.start_instances(InstanceIds=[instance_id])
+            result= responses['ResponseMetadata']['HTTPStatusCode']== 200
+       #     print (result)
+        except Exception as e:
+            print(e)
+        finally:
+            return result
 
     def stop_instance(self, instance_id):
-        responses = self.ec2_client.stop_instances(InstanceIds=[instance_id])
-        return responses['ResponseMetadata']['HTTPStatusCode']
+        result= False
+        try:
+            responses = self.ec2_client.stop_instances(InstanceIds=[instance_id])
+            result = responses['ResponseMetadata']['HTTPStatusCode']==200
+        except Exception as e:
+            print(e)
+        return result
 
     def terminate_instance(self, instance_id):
-        responses = self.ec2_client.terminate_instances(InstanceIds=[instance_id])
-        return responses['ResponseMetadata']['HTTPStatusCode']
+        result= False
+        try:
+            responses = self.ec2_client.terminate_instances(InstanceIds=[instance_id])
+            result = responses['ResponseMetadata']['HTTPStatusCode']== 200
+        except Exception as e:
+            print(e)
+        return result
 
     def action_selector(self, instance_action):
         return {
