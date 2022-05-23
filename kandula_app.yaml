@@ -7,7 +7,7 @@ metadata:
     app: backend
 spec:
    containers:
-     - image: lihilure/kandula_image_app:new
+     - image: lihilure/kandula_image_app:first
        name: kandula
        ports:
          - containerPort: 5000
