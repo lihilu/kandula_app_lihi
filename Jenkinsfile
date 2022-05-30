@@ -1,4 +1,5 @@
 pipeline {
+    //teeeee
     agent {label "jenkins1"}
         environment {
             register = "lihilure/kandula_image_app"
