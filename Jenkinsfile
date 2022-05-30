@@ -1,6 +1,7 @@
 pipeline {
     agent {label "jenkins1"}
         environment {
+            //kaka
             register = "lihilure/kandula_image_app"
             dockerimage = ""
             AWS_DEFAULT_REGION="us-east-1"
