@@ -1,18 +1,31 @@
 pipeline {
     agent {label "jenkins1"}
         environment {
-            //kaka
             register = "lihilure/kandula_image_app"
             dockerimage = ""
             AWS_DEFAULT_REGION="us-east-1"
-            upload_image = "${register}:first"
+            upload_image = "${register}:${params.Version}"
+        }
+        parameters {
+            gitParameter ( 
+                    branch: 'new',
+                    branchFilter: ".*",
+                    defaultValue: "new",
+                    description: '',
+                    listSize: '10',
+                    name: 'Version',
+                    quickFilterEnabled: false,
+                    selectedValue: 'NONE',
+                    sortMode: 'ASCENDING_SMART',
+                    tagFilter: "*",
+                    type: 'PT_BRANCH_TAG')
         }
     stages {
         stage('slack massage') {
             steps{
                 script{
                     channel = "_notifications"
-                    slackSend channel: channel,  color: "#6a0dad", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                    slackSend channel: channel,  color: "#6a0dad", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER} Version:${params.Version} "
                     end = "failure"
                     customImage = ""}
                 }
@@ -21,8 +34,9 @@ pipeline {
         stage("git clone") {
             steps{
                 script {
+                    echo "${params.Version}"
                     end = "failure"
-                    git branch: 'new', credentialsId: 'a4f8a586-5917-4b6b-bcdb-eca9865e558f', url: 'https://github.com/lihilu/kandula_app_lihi.git'
+                    git branch:'new', credentialsId: 'a4f8a586-5917-4b6b-bcdb-eca9865e558f', url: 'https://github.com/lihilu/kandula_app_lihi.git'
                     end = "success"
                 }
             }
@@ -31,7 +45,7 @@ pipeline {
             steps{
                 script {
                     end = "failure"
-                    dockerimage = docker.build register + ":first" 
+                    dockerimage = docker.build register + ":${params.Version}" 
                      end = "success"
                 }
             }    
@@ -90,10 +104,10 @@ pipeline {
         always{
             script{
                 if (end == "success"){
-                    slackSend channel: channel, color: "#00FF00", message: "Build ended successfully: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                    slackSend channel: channel, color: "#00FF00", message: "Build ended successfully: ${env.JOB_NAME} ${env.BUILD_NUMBER} Version:${params.Version}"
                     slackSend channel: channel,  color: "#00FF00", message: "results: ${env.BUILD_URL}"}
                 else{
-                    slackSend channel: channel, color: "#FF0000", message: "Build ended with errors: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                    slackSend channel: channel, color: "#FF0000", message: "Build ended with errors: ${env.JOB_NAME} ${env.BUILD_NUMBER} Version:${params.Version}"
                     slackSend channel: channel, color: "#FF0000", message: "results: ${env.BUILD_URL}"}
 
             }
