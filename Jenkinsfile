@@ -3,8 +3,8 @@ pipeline {
         environment {
             register = "lihilure/kandula_image_app"
             dockerimage = ""
-            upload_image= ""
             AWS_DEFAULT_REGION="us-east-1"
+            upload_image = "${register}:first"
         }
     stages {
         stage('slack massage') {
@@ -21,7 +21,7 @@ pipeline {
             steps{
                 script {
                     end = "failure"
-                    git branch: 'new', credentialsId: 'Lihi.opsschool.jenkins', url: 'https://github.com/lihilu/kandula_app_lihi.git'
+                    git branch: 'new', credentialsId: 'a4f8a586-5917-4b6b-bcdb-eca9865e558f', url: 'https://github.com/lihilu/kandula_app_lihi.git'
                     end = "success"
                 }
             }
@@ -35,12 +35,18 @@ pipeline {
                 }
             }    
         }
+        stage("scan image"){
+            steps{
+                echo "Scanning image ${upload_image}"
+                sh "trivy image --timeout 5m --severity CRITICAL,HIGH ${upload_image}"
+                sh "trivy image --timeout 5m --severity UNKNOWN,LOW,MEDIUM ${upload_image}"
+            }
+        }
         stage("docker push"){
             steps{
                 script{
                     end = "failure"
-                    withDockerRegistry([ credentialsId: "lihi dockerhub", url: "" ]) {
-                    upload_image = register + ":first"
+                    withDockerRegistry([ credentialsId: "lihi_dockerhub", url: "" ]) {
                     sh "docker image push ${upload_image}"
                     }
                     end = "success"
@@ -70,7 +76,7 @@ pipeline {
            steps{
                 script {
                     end = "failure"
-                    withCredentials([usernamePassword(credentialsId: 'awsuserpass', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    withCredentials([usernamePassword(credentialsId: 'awslogin', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                         sh 'kubectl apply -f kandula_app.yaml'
                     }
                     end = "success"
