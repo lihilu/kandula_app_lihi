@@ -32,6 +32,7 @@ spec:
     service.beta.kubernetes.io/do-loadbalancer-algorithm: "round_robin"
     service.beta.kubernetes.io/do-loadbalancer-tls-ports: "443"
     service.beta.kubernetes.io/do-loadbalancer-certificate-id: "6f84ea13-9b72-4b4f-ab8e-e41469f4468e"
+    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
  spec:
    selector:
      app: backend
