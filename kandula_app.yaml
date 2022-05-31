@@ -28,7 +28,7 @@ spec:
    volumes:
     - name: tls-certs
       secret:
-        secretName: kandula-tls
+        secretName: kuard-tls
 
 # ---
 # apiVersion: v1
