@@ -4,19 +4,15 @@ kind: Pod
 metadata:
   name: kandula-pod
   labels:
-    app: backend-tls
+    app: backend
 spec:
    containers:
      - image: lihilure/kandula_image_app:v1
-       name: kandula-tls
+       name: kandula
        ports:
          - containerPort: 5000
            name: http
            protocol: TCP
-       volumeMounts:
-        - name: tls-certs
-          mountPath: "/tls"
-          readOnly: true
        env:
          - name: FLASK_ENV
            value: development
@@ -25,36 +21,19 @@ spec:
        envFrom:
          - secretRef:
               name: mysecret
-   volumes:
-    - name: tls-certs
-      secret:
-        secretName: kuard-tls
-
 
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: hostname-svc
-spec:
-  ports:
-  - port: 80
-    targetPort: 5000
-    protocol: TCP
-  selector:
-    app: kandula-pod
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: backend-service-tls
-# spec:
-#   selector:
-#     app: backend
-#   type: LoadBalancer
-#   ports:
-#     - name: http
-#       port: 80 
-#       targetPort: 5000
-#       nodePort: 30036
-#       protocol: TCP
+ apiVersion: v1
+ kind: Service
+ metadata:
+   name: backend-service-tls
+ spec:
+   selector:
+     app: backend
+   type: LoadBalancer
+   ports:
+     - name: http
+       port: 443 
+       targetPort: 5000
+       nodePort: 30036
+       protocol: TCP
