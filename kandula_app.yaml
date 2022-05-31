@@ -30,7 +30,20 @@ spec:
       secret:
         secretName: kuard-tls
 
-# ---
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hostname-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: kandula-pod
+
 # apiVersion: v1
 # kind: Service
 # metadata:
