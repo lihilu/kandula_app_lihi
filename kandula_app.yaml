@@ -28,13 +28,7 @@ spec:
  metadata:
    name: backend-service
    annotations:
-    service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
-    service.beta.kubernetes.io/do-loadbalancer-algorithm: "round_robin"
-    service.beta.kubernetes.io/do-loadbalancer-tls-ports: "443"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "6f84ea13-9b72-4b4f-ab8e-e41469f4468e"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: "kandula.ops.club"
-    service.beta.kubernetes.io/do-loadbalancer-http2-ports: 443,80
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:314452776120:certificate/6f84ea13-9b72-4b4f-ab8e-e41469f4468e
+
  spec:
    selector:
      app: backend
