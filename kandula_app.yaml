@@ -22,18 +22,18 @@ spec:
          - secretRef:
               name: mysecret
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service-tls
-spec:
-  selector:
-    app: backend
-  type: LoadBalancer
-  ports:
-    - name: http
-      port: 80 
-      targetPort: 5000
-      nodePort: 30036
-      protocol: TCP
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: backend-service-tls
+# spec:
+#   selector:
+#     app: backend
+#   type: LoadBalancer
+#   ports:
+#     - name: http
+#       port: 80 
+#       targetPort: 5000
+#       nodePort: 30036
+#       protocol: TCP
