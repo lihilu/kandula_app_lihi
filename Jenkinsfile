@@ -18,7 +18,7 @@ pipeline {
                     selectedValue: 'NONE',
                     sortMode: 'ASCENDING_SMART',
                     tagFilter: "*",
-                    type: 'PT_BRANCH_TAG')
+                    type: 'PT_TAG')
         }
     stages {
         stage('slack massage') {
@@ -34,10 +34,18 @@ pipeline {
         stage("git clone") {
             steps{
                 script {
-                    echo "${params.Version}"
+
                     end = "failure"
                     git branch:'new', credentialsId: 'a4f8a586-5917-4b6b-bcdb-eca9865e558f', url: 'https://github.com/lihilu/kandula_app_lihi.git'
                     end = "success"
+                }
+            }
+        }
+        stage("update yaml file") {
+            steps{
+                script {
+                    sh "sed -i 's/TAG/${params.Version}/' kandula_app.yaml"
+                    sh "cat kandula_app.yaml"
                 }
             }
         }
