@@ -1,5 +1,6 @@
 FROM python:3.9-slim
 
+
 RUN mkdir /kandula
 
 COPY . /kandula/
@@ -9,3 +10,7 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 CMD ["/bin/bash", "bin/run"]
+
+RUN useradd -ms /bin/bash kandulaproject
+USER kandulaproject
+WORKDIR /home/kandulaproject
