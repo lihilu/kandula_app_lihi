@@ -44,8 +44,8 @@ pipeline {
         stage("update yaml file") {
             steps{
                 script {
-                    sh "sed -i 's/TAG/${params.Version}/' deployment_kandulla_app.yaml"
-                    sh "cat deployment_kandulla_app.yaml"
+                    sh "sed -i 's/TAG/${params.Version}/' deployment_kandula_app.yaml"
+                    sh "cat deployment_kandula_app.yaml"
                 }
             }
         }
@@ -100,7 +100,7 @@ pipeline {
                 script {
                     end = "failure"
                     withCredentials([usernamePassword(credentialsId: 'awslogin', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                        sh 'kubectl apply -f deployment_kandulla_app.yaml'
+                        sh 'kubectl apply -f deployment_kandula_app.yaml'
                         sh 'kubectl apply -f /tmp/kubenlb.yaml'
                     }
                     end = "success"
