@@ -11,9 +11,6 @@ spec:
   # 1. How many copies of each pod do we want?
   replicas: 3
 
-  # 2. How do want to update the pods?
-  strategy: Recreate
-
   # 3. Which pods are managed by this deployment?
   selector:
     # This must match the labels we set on the pod!
@@ -43,5 +40,5 @@ spec:
               value: us-east-1
           envFrom:
             - secretRef:
-              name: mysecret
+                name: mysecret
 
