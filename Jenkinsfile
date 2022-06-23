@@ -113,11 +113,11 @@ pipeline {
         always{
             script{
                 if (end == "success"){
-                    slackSend channel: channel, color: "#00FF00", message: "Build ended successfully: ${env.JOB_NAME} ${env.BUILD_NUMBER} Version:${params.Version}"
-                    slackSend channel: channel,  color: "#00FF00", message: "results: ${env.BUILD_URL}"}
+                     slackSend channel: channel, color: "#00FF00", message: "Build ended successfully: ${env.JOB_NAME} ${env.BUILD_NUMBER} Version:${params.Version}"
+                     slackSend channel: channel,  color: "#00FF00", message: "results: ${env.BUILD_URL}"}
                 else{
-                    slackSend channel: channel, color: "#FF0000", message: "Build ended with errors: ${env.JOB_NAME} ${env.BUILD_NUMBER} Version:${params.Version}"
-                    slackSend channel: channel, color: "#FF0000", message: "results: ${env.BUILD_URL}"}
+                     slackSend channel: channel, color: "#FF0000", message: "Build ended with errors: ${env.JOB_NAME} ${env.BUILD_NUMBER} Version:${params.Version}"
+                     slackSend channel: channel, color: "#FF0000", message: "results: ${env.BUILD_URL}"}
 
             }
 
