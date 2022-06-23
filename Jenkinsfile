@@ -44,8 +44,8 @@ pipeline {
         stage("update yaml file") {
             steps{
                 script {
-                    sh "sed -i 's/TAG/${params.Version}/' kandula_app.yaml"
-                    sh "cat kandula_app.yaml"
+                    sh "sed -i 's/TAG/${params.Version}/' deployment_kandulla_app.yaml"
+                    sh "cat deployment_kandulla_app.yaml"
                 }
             }
         }
