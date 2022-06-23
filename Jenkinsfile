@@ -100,7 +100,7 @@ pipeline {
                 script {
                     end = "failure"
                     withCredentials([usernamePassword(credentialsId: 'awslogin', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                        sh 'kubectl apply -f kandula_app.yaml'
+                        sh 'kubectl apply -f deployment_kandulla_app.yaml'
                         sh 'kubectl apply -f /tmp/kubenlb.yaml'
                     }
                     end = "success"
