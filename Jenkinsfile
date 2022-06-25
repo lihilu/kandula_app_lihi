@@ -102,7 +102,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'awslogin', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                         sh 'kubectl create ns kandula'
                         sh 'kubectl apply -f deployment_kandula_app.yaml -n kandula'
-                        sh 'kubectl apply -f /tmp/kubenlb.yaml'
+                        sh 'kubectl apply -f /tmp/kubenlb.yaml -n kube-system'
                     }
                     end = "success"
                 }
