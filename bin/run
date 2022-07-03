@@ -8,4 +8,4 @@ if [ "${FLASK_ENV}" == "development" ]; then
   export SECRET_KEY="kandula-test"
 fi
 
-python3 run.py
+python run.py

@@ -1,4 +1,11 @@
 from boto3 import client
+from botocore.exceptions import ClientError
+import json
+import botocore 
+import botocore.session 
+from aws_secretsmanager_caching import SecretCache, SecretCacheConfig
+import psycopg2
+
 AWS_REGION="us-east-1"
 ec2_client = client('ec2', region_name=AWS_REGION)
 
@@ -15,7 +22,27 @@ def check_aws_connection():
 
 
 def check_db_connection():
-    # TODO: implement real select query to db. If successful, return true. otherwise return False
+
+    client = botocore.session.get_session().create_client('secretsmanager')
+    cache_config = SecretCacheConfig()
+    cache = SecretCache( config = cache_config, client = client)
+
+    secret = cache.get_secret_string('kanduladblihi')
+    secret_json=json.loads(secret)
+
+    db_user=secret_json['username']
+    db_pass=secret_json['password']
+    db_name= secret_json['dbname']
+
+    connection = psycopg2.connect(
+    host = 'your_RDB_AWS_instance_Endpoint',
+    port = 5432,
+    user = 'YOUR_USER_NAME',
+    password = 'YOUR_PASSWORD',
+    database='YOUR_DATABASE_NAME'
+    )
+    cursor=connection.cursor()
+    print ("hfkjdshflkdsahfdksjhfaksjdhf" + cursor)
     return True
 
 
