@@ -4,7 +4,7 @@ pipeline {
             register = "lihilure/kandula_image_app"
             dockerimage = ""
             AWS_DEFAULT_REGION="us-east-1"
-            upload_image = "${register}:${params.Version}"
+            upload_image = "${register}:${params.Version}-${env.BUILD_NUMBER}"
         }
         parameters {
             gitParameter ( 
@@ -44,7 +44,7 @@ pipeline {
         stage("update yaml file") {
             steps{
                 script {
-                    sh "sed -i 's/TAG/${params.Version}/' deployment_kandula_app.yaml"
+                    sh "sed -i 's/TAG/${params.Version}-${env.BUILD_NUMBER}/' deployment_kandula_app.yaml"
                     sh "cat deployment_kandula_app.yaml"
                 }
             }
@@ -53,7 +53,7 @@ pipeline {
             steps{
                 script {
                     end = "failure"
-                    dockerimage = docker.build register + ":${params.Version}" 
+                    dockerimage = docker.build register + ":${params.Version}-${env.BUILD_NUMBER}" 
                      end = "success"
                 }
             }    
@@ -101,7 +101,6 @@ pipeline {
                     end = "failure"
                     withCredentials([usernamePassword(credentialsId: 'awslogin', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                         sh 'kubectl apply -f deployment_kandula_app.yaml -n kandula'
-                        sh 'kubectl apply -f /tmp/kubenlb.yaml -n kandula'
                     }
                     end = "success"
                 }
