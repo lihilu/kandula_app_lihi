@@ -68,9 +68,10 @@ def db_host():
 
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
+    client = boto3.client('rds', region_name=AWS_REGION)
+    db_instances = client.describe_db_instances()
     #print (db_info['username'])
-    response = boto3.client.describe_db_instances(DBInstanceIdentifier='kanduladb')
-    rds_host = response.get('DBInstances')[0].get('Endpoint').get('Address')
+    rds_host = db_instances.get('DBInstances')[0].get('Endpoint').get('Address')
     print (rds_host)
     try:
         conn = psycopg2.connect(database=db_info['dbname'],
