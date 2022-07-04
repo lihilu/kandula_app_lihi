@@ -4,6 +4,7 @@ import json
 import botocore 
 import psycopg2
 import base64
+import boto3
 
 AWS_REGION="us-east-1"
 ec2_client = client('ec2', region_name=AWS_REGION)
@@ -56,12 +57,6 @@ def aws_secret_manager(secretid):
             secret = base64.b64decode(get_secret_value_response['SecretBinary'])
 
     secret_load= json.loads(secret)  # returns the secret as dictionary
-    # print (secret_load)
-    # db_user=  secret_load['username']
-    # db_password=  secret_load['password']
-    # db_host = secret_load['host']
-    # db_name = secret_load['dbname']
-    # print (db_user, db_password,db_host, db_name)
     return (secret_load)
 
 
@@ -74,7 +69,7 @@ def db_host():
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
     #print (db_info['username'])
-    response = client.describe_db_instances(DBInstanceIdentifier='kanduladb')
+    response = boto3.client.describe_db_instances(DBInstanceIdentifier='kanduladb')
     rds_host = response.get('DBInstances')[0].get('Endpoint').get('Address')
     print (rds_host)
     try:
