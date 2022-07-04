@@ -65,7 +65,7 @@ def aws_secret_manager(secretid):
 
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
-    #print (db_info['username'])
+    print ("123456")
     conn = psycopg2.connect(database=db_info['dbname'],
                         host='kanduladb.cgtlguhuqzoq.us-east-1.rds.amazonaws.com',
                         user=db_info['username'],
