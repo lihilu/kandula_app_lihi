@@ -68,16 +68,15 @@ def aws_secret_manager(secretid):
 def db_host():
     instances = client.describe_db_instances(DBInstanceIdentifier=db_instance)
     rds_host = instances.get('DBInstances')[0].get('Endpoint').get('Address')
-    print ("rrrrrrrrrrrrrrrrrrrrrrrrrr",rds_host)
+    print (rds_host)
     return (rds_host)
 
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
     #print (db_info['username'])
-    clientss = client('rds')
-    response = clientss.describe_db_instances()
-    print ("rrrrrrrrrrrrrrrrrrrrrrrrrr",response)
-
+    response = client.describe_db_instances(DBInstanceIdentifier=db_instance)
+    rds_host = response.get('DBInstances')[0].get('Endpoint').get('Address')
+    print (rds_host)
     try:
         conn = psycopg2.connect(database=db_info['dbname'],
                         host='kanduladb.cgtlguhuqzoq.us-east-1.rds.amazonaws.com',
