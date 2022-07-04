@@ -1,5 +1,8 @@
 FROM python:3.9-slim
 
+RUN useradd -ms /bin/bash kandulaproject
+USER kandulaproject
+WORKDIR /home/kandulaproject
 
 RUN mkdir /kandula
 
@@ -11,6 +14,4 @@ RUN pip install -r requirements.txt
 
 CMD ["/bin/bash", "bin/run"]
 
-RUN useradd -ms /bin/bash kandulaproject
-USER kandulaproject
-WORKDIR /home/kandulaproject
+
