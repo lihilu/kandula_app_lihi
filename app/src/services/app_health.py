@@ -7,6 +7,7 @@ import base64
 
 AWS_REGION="us-east-1"
 ec2_client = client('ec2', region_name=AWS_REGION)
+db_instance = 'kanduladb'
 
 def get_machine_time():
     return 1602824750094  # No need to implement at the moment
@@ -63,24 +64,27 @@ def aws_secret_manager(secretid):
     # print (db_user, db_password,db_host, db_name)
     return (secret_load)
 
+
+def db_host():
+    instances = client.describe_db_instances(DBInstanceIdentifier=db_instance)
+    rds_host = instances.get('DBInstances')[0].get('Endpoint').get('Address')
+    print (rds_host)
+    return (rds_host)
+
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
-    conn = psycopg2.connect(database=db_info['dbname'],
+    #print (db_info['username'])
+
+    try:
+        conn = psycopg2.connect(database=db_info['dbname'],
                         host='kanduladb.cgtlguhuqzoq.us-east-1.rds.amazonaws.com',
                         user=db_info['username'],
                         password=db_info['password'],
                         port=5432)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM information_schema.tables")
-    try:
-        rows = cursor.fetchall()
         conn.close()
         return True
     except:
         return False
-    
-    
-    
 
 
 def is_app_healthy(healthchecks):
