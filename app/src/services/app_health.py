@@ -65,18 +65,21 @@ def aws_secret_manager(secretid):
 
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
-    print (db_info['username'])
-
-    try:
-        conn = psycopg2.connect(database=db_info['dbname'],
+    #print (db_info['username'])
+    conn = psycopg2.connect(database=db_info['dbname'],
                         host='kanduladb.cgtlguhuqzoq.us-east-1.rds.amazonaws.com',
                         user=db_info['username'],
                         password=db_info['password'],
                         port=5432)
-        conn.close()
-        return True
-    except:
-        return False
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM information_schema.tables")
+    rows = cursor.fetchall()
+    print (rows, "RRRRRRRRRROOOOOOOOOOOOOOOOOOOWWWWWWWWWWWWWWW")
+    for table in rows:
+        print(table)
+    
+    conn.close()
+    return False
 
 
 def is_app_healthy(healthchecks):
