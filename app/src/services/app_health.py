@@ -74,7 +74,7 @@ def db_host():
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
     #print (db_info['username'])
-    response = client.describe_db_instances(DBInstanceIdentifier=db_instance)
+    response = client.describe_db_instances(DBInstanceIdentifier='kanduladb')
     rds_host = response.get('DBInstances')[0].get('Endpoint').get('Address')
     print (rds_host)
     try:
