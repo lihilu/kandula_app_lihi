@@ -14,5 +14,5 @@ flake8-colors
 yamllint
 psycopg2-binary
 pybase64
-boto3
-botocore
+# boto3
+# botocore
