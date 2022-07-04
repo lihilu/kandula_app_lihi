@@ -17,3 +17,4 @@ aws_secretsmanager_caching
 boto3
 botocore
 aws-secretsmanager
+secretsmanager
