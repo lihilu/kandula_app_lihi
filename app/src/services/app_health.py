@@ -68,7 +68,7 @@ def aws_secret_manager(secretid):
 def db_host():
     instances = client.describe_db_instances(DBInstanceIdentifier=db_instance)
     rds_host = instances.get('DBInstances')[0].get('Endpoint').get('Address')
-    print (rds_host)
+    print ("rrrrrrrrrrrrrrrrrrrrrrrrrr",rds_host)
     return (rds_host)
 
 def check_db_connection():
