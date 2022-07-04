@@ -74,9 +74,9 @@ def db_host():
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
     #print (db_info['username'])
-    instances = client.describe_db_instances(DBInstanceIdentifier=db_instance)
-    rds_host = instances.get('DBInstances')[0].get('Endpoint').get('Address')
-    print ("rrrrrrrrrrrrrrrrrrrrrrrrrr",rds_host)
+    client = client('rds')
+    response = client.describe_db_instances()
+    print ("rrrrrrrrrrrrrrrrrrrrrrrrrr",response)
 
     try:
         conn = psycopg2.connect(database=db_info['dbname'],
