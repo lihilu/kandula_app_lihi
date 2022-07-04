@@ -13,7 +13,6 @@ flake8
 flake8-colors
 yamllint
 psycopg2-binary
-aws_secretsmanager_caching
+base64
 boto3
 botocore
-setuptools_scm
