@@ -74,8 +74,8 @@ def db_host():
 def check_db_connection():
     db_info=  aws_secret_manager('kanduladblihi')
     #print (db_info['username'])
-    client = client('rds')
-    response = client.describe_db_instances()
+    clientss = client('rds')
+    response = clientss.describe_db_instances()
     print ("rrrrrrrrrrrrrrrrrrrrrrrrrr",response)
 
     try:
