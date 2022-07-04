@@ -4,7 +4,7 @@ kind: Pod
 metadata:
   name: kandula-pod
   labels:
-    app: backend
+    app: kandula
 spec:
    containers:
      - image: lihilure/kandula_image_app:TAG
