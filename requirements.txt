@@ -13,3 +13,4 @@ flake8
 flake8-colors
 yamllint
 psycopg2-binary
+aws_secretsmanager_caching
