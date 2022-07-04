@@ -16,6 +16,5 @@ psycopg2-binary
 aws_secretsmanager_caching
 boto3
 botocore
-botocore.session
 json
 setuptools_scm
