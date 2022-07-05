@@ -73,4 +73,4 @@ class InstanceData:
             single_instance['PrivateIpAddress'] = self.check_value(instance,'PrivateIpAddress')
             my_instances['Instances'].append(single_instance)
 
-        return my_instances_list
+        return my_instances
