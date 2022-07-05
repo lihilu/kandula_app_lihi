@@ -75,7 +75,7 @@ def instances(instance_data: InstanceData = Provide[Container.instance_data]):
 
 def instances_list(instance_data: InstanceData = Provide[Container.instance_data]):
     instances_response = instance_data.get_instances()
-    return instances_response['Instances']
+    return instances_response
 
 def scheduler():
     if request.method == 'POST':
