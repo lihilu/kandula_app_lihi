@@ -73,6 +73,10 @@ def instances(instance_data: InstanceData = Provide[Container.instance_data]):
     return render_template('instances.html', title='Instances',
                            instances=instances_response['Instances'])
 
+@inject
+def instances_list(instance_data: InstanceData = Provide[Container.instance_data]):
+    instances_response = instance_data.get_instances()
+    return render_template(instances=instances_response['Instances'])
 
 def scheduler():
     if request.method == 'POST':
