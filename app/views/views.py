@@ -73,8 +73,8 @@ def instances(instance_data: InstanceData = Provide[Container.instance_data]):
     return render_template('instances.html', title='Instances',
                            instances=instances_response['Instances'])
 @inject
-def get_instances_list(instance_data: InstanceData = Provide[Container.instance_data]):
-    instances_response = instance_data.get_instances_list()
+def get_instance_list(instance_data: InstanceData = Provide[Container.instance_data]):
+    instances_response = instance_data.get_instance_list()
     return instances_response
 
 def scheduler():

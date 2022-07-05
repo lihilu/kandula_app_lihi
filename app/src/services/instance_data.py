@@ -54,7 +54,7 @@ class InstanceData:
         return my_instances
 
 
-    def get_instances_list(self):
+    def get_instance_list(self):
         response = self.ec2_client.describe_instances()
         region= self.ec2_client.meta.region_name
         response_list = response['Reservations']
