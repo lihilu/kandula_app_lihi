@@ -52,3 +52,25 @@ class InstanceData:
             my_instances['Instances'].append(single_instance)
 
         return my_instances
+
+
+    def get_instances_list(self):
+        response = self.ec2_client.describe_instances()
+        region= self.ec2_client.meta.region_name
+        response_list = response['Reservations']
+        my_instances = {'Instances':[]}
+        for each_response in response_list:
+            instance = each_response['Instances'][0]
+            single_instance={}
+            single_instance['Id'] = self.check_value(instance,'InstanceId')
+            single_instance['Type'] = self.check_value(instance,'InstanceType')
+            single_instance['Region'] = region
+            single_instance['State'] = self.check_value(instance['State'],'Name')
+            if instance['State']['Name'] == 'running':
+                single_instance['StateReason'] = 'None'
+            else:
+                single_instance['StateReason'] = self.check_value(instance['StateReason'],'Message')
+            single_instance['PrivateIpAddress'] = self.check_value(instance,'PrivateIpAddress')
+            my_instances['Instances'].append(single_instance)
+
+        return my_instances_list
