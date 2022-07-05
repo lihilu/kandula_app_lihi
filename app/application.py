@@ -31,7 +31,7 @@ def create_app() -> Flask:
     app.add_url_rule('/about', 'about', views.about, methods=['GET'])
     app.add_url_rule('/health', 'health', views.health, methods=['GET'])
     app.add_url_rule('/instances', 'instances', views.instances, methods=['GET'])
-    app.add_url_rule('/instanceslist', 'instances', views.instances_list, methods=['GET'])
+    app.add_url_rule('/instanceslist', 'instanceslist', views.instances_list, methods=['GET'])
     app.add_url_rule('/instances/<string:instance_id>/<string:instance_action>',
                      view_func=InstanceAPI.as_view('instance_actions'), methods=['GET', 'POST'])
 
