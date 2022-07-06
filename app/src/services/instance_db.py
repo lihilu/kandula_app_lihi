@@ -25,11 +25,12 @@ def get_scheduling():
             cur= conn.cursor()
             cur.execute(postgreSQL_select_Query)
             records = cur.fetchall()
-            print ("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",records)
+            print (records)
         #    instance_schedule={'Instances':[]}
             print ("emptyyyyy",instance_schedule)
             for row in records:
-                print("rowwwwwwww",row)
+                if row[0] == '':
+                    break
                 single_instance={}
                 single_instance['Id'] = row[0]
                 single_instance['DailyShutdownHour'] = row[1]
