@@ -5,24 +5,16 @@ import botocore
 import psycopg2
 import base64
 import boto3
-from app_health import db_host , aws_secret_manager
+from app_health import check_db_connection
 
 instance_schedule = {
     "Instances": []
 }
 
-def db_connection():
-    db_info=  aws_secret_manager('kanduladblihi')
-    conn = psycopg2.connect(database=db_info['dbname'],
-                        host=db_host(),
-                        user=db_info['username'],
-                        password=db_info['password'],
-                        port=5432)
-    return (conn)
 
 def get_scheduling():
     try:
-        cursor = db_connection.conn()
+        cursor = check_db_connection()
         postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
 
         cursor.execute(postgreSQL_select_Query)
@@ -36,9 +28,9 @@ def get_scheduling():
 
     finally:
         # closing database connection
-        if db_connection.conn():
+        if cursor():
             cursor.close()
-            db_connection.conn().close()
+            cursor.close()
             print("PostgreSQL connection is closed \n")
     # TODO: Implement a DB select query that gets all instance ids and their scheduled hours
     #       The returned data would be a in JSON format as show in the sample output below

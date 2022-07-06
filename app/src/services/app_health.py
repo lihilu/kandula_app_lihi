@@ -74,10 +74,11 @@ def check_db_connection():
                         user=db_info['username'],
                         password=db_info['password'],
                         port=5432)
-        conn.close()
         return True
     except:
         return False
+    finally:
+        conn.close()
 
 
 def is_app_healthy(healthchecks):
