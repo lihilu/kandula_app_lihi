@@ -25,6 +25,7 @@ def get_scheduling():
             cur= conn.cursor()
             cur.execute(postgreSQL_select_Query)
             records = cur.fetchall()
+            print (records)
         #    instance_schedule={'Instances':[]}
             print (instance_schedule)
             for row in records:
