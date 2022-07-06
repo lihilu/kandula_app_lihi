@@ -29,7 +29,7 @@ def get_scheduling():
         #    instance_schedule={'Instances':[]}
             print ("emptyyyyy",instance_schedule)
             for row in records:
-                if row[0] == '':
+                if row[0] == 'None':
                     break;
                 single_instance={}
                 single_instance['Id'] = row[0]
