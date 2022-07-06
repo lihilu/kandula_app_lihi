@@ -39,9 +39,9 @@ def get_scheduling():
 
     finally:
         # closing database connection
-        if cursor():
-            cursor.close()
-            cursor.close()
+        if cur():
+            cur.close()
+            cur.close()
             print("PostgreSQL connection is closed \n")
     # TODO: Implement a DB select query that gets all instance ids and their scheduled hours
     #       The returned data would be a in JSON format as show in the sample output below
