@@ -5,7 +5,7 @@ import botocore
 import psycopg2
 import base64
 import boto3
-from .app_health import check_db_connection
+from .app_health import db_host, aws_secret_manager
 
 instance_schedule = {
     "Instances": []
@@ -13,15 +13,21 @@ instance_schedule = {
 
 
 def get_scheduling():
+    db_info=  aws_secret_manager('kanduladblihi')
+    conn = psycopg2.connect(database=db_info['dbname'],
+                        host=db_host(),
+                        user=db_info['username'],
+                        password=db_info['password'],
+                        port=5432)
     try:
-        cursor = check_db_connection()
-        postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
-
-        cursor.execute(postgreSQL_select_Query)
-        records = cursor.fetchall()
+        if conn:
+            postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
+            cur= conn.cursor()
+            cur.execute(postgreSQL_select_Query)
+            records = cur.fetchall()
         for row in records:
-                instance_schedule('Instances').append(instance_id = row[0] )
-                instance_schedule('Instances').append(shutdown_hour = row[0] )
+            instance_schedule('Instances').append(instance_id = row[0] )
+            instance_schedule('Instances').append(shutdown_hour = row[0] )
 
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
