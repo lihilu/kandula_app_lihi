@@ -5,7 +5,7 @@ import botocore
 import psycopg2
 import base64
 import boto3
-from app_health import check_db_connection
+from .app_health import check_db_connection
 
 instance_schedule = {
     "Instances": []
