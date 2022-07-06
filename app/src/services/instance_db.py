@@ -29,6 +29,9 @@ def get_scheduling():
         #    instance_schedule={'Instances':[]}
             print (instance_schedule)
             for row in records:
+                index = [i['Id'] for i in instance_schedule["Instances"]].index(row[0])
+                instance_schedule["Instances"][index] = {"Id": row[0], "DailyShutdownHour": int(row[0:2])}
+                print("Instance {} will be shutdown was updated to the hour {}".format(row[0], row[0:2]))
                 print(row)
                 single_instance={}
                 single_instance['instance_id'] = row[0]
