@@ -7,9 +7,9 @@ import base64
 import boto3
 from .app_health import db_host, aws_secret_manager
 
-instance_schedule = {
-    "Instances": []
-}
+# instance_schedule = {
+#     "Instances": []
+# }
 
 
 def get_scheduling():
@@ -25,10 +25,15 @@ def get_scheduling():
             cur= conn.cursor()
             cur.execute(postgreSQL_select_Query)
             records = cur.fetchall()
+            instance_schedule={'Instances':[]}
+            print (instance_schedule)
         for row in records:
-            instance_schedule('Instances').append(instance_id = row[0] )
-            instance_schedule('Instances').append(shutdown_hour = row[0] )
-
+            print(row)
+            single_instance={}
+            single_instance.append(instance_id = row[0] )
+            single_instance.append(shutdown_hour = row[0] )
+            instance_schedule['Instances'].append(single_instance)
+        print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
 
