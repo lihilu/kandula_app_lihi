@@ -30,7 +30,7 @@ def get_scheduling():
             print ("emptyyyyy",instance_schedule)
             for row in records:
                 if row[0] == '':
-                    break
+                    break;
                 single_instance={}
                 single_instance['Id'] = row[0]
                 single_instance['DailyShutdownHour'] = row[1]
