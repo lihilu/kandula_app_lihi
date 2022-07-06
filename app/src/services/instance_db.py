@@ -28,9 +28,11 @@ def get_scheduling():
             print (records)
         #    instance_schedule={'Instances':[]}
             print (instance_schedule)
+            a=0
             for row in records:
-                instance_schedule["Instances"][0] = {"Id": row[0], "DailyShutdownHour": int(row[0:2])}
-                print("Instance {} will be shutdown was updated to the hour {}".format(row[0], row[0:2]))
+                instance_schedule["Instances"][a] = {"Id": row[0], "DailyShutdownHour": int(row[0])}
+                print("Instance {} will be shutdown was updated to the hour {}".format(row[0], row[1]))
+                a=a+1
                 print(row)
             print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
