@@ -32,7 +32,7 @@ def get_scheduling():
                 print(row)
                 single_instance={}
                 single_instance['instance_id'] = row[0]
-                single_instance['DailyShutdownHour'] = int(row[0:2])
+                single_instance['DailyShutdownHour'] = row[0:2]
                 instance_schedule['Instances'].append(single_instance)
             print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
