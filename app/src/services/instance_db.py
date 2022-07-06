@@ -8,11 +8,7 @@ import boto3
 from app_health import db_host , aws_secret_manager
 
 instance_schedule = {
-    "Instances": [
-        {"Id": "i-1234567890abcdef0", "DailyShutdownHour": 23},
-        {"Id": "i-0ea8205a7a93969a5", "DailyShutdownHour": 20},
-        {"Id": "i-05d648b954c1254d6", "DailyShutdownHour": 18}
-    ]
+    "Instances": []
 }
 
 def db_connection():
@@ -32,8 +28,8 @@ def get_scheduling():
         cursor.execute(postgreSQL_select_Query)
         records = cursor.fetchall()
         for row in records:
-                print("Id ", row[0], )
-                print("DailyShutdownHour", row[1])
+                instance_schedule('Instances').append(instance_id = row[0] )
+                instance_schedule('Instances').append(shutdown_hour = row[0] )
 
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
