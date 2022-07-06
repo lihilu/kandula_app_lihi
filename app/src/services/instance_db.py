@@ -5,55 +5,7 @@ import botocore
 import psycopg2
 import base64
 import boto3
-
-AWS_REGION="us-east-1"
-ec2_client = client('ec2', region_name=AWS_REGION)
-db_instance = 'kanduladb'
-
-def aws_secret_manager(secretid):
-    client = botocore.session.get_session().create_client('secretsmanager')
-    try:
-        get_secret_value_response = client.get_secret_value(
-            SecretId=secretid)
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'DecryptionFailureException':
-            # Secrets Manager can't decrypt the protected secret text using the provided KMS key.
-            # Deal with the exception here, and/or rethrow at your discretion.
-            raise e
-        elif e.response['Error']['Code'] == 'InternalServiceErrorException':
-            # An error occurred on the server side.
-            # Deal with the exception here, and/or rethrow at your discretion.
-            raise e
-        elif e.response['Error']['Code'] == 'InvalidParameterException':
-            # You provided an invalid value for a parameter.
-            # Deal with the exception here, and/or rethrow at your discretion.
-            raise e
-        elif e.response['Error']['Code'] == 'InvalidRequestException':
-            # You provided a parameter value that is not valid for the current state of the resource.
-            # Deal with the exception here, and/or rethrow at your discretion.
-            raise e
-        elif e.response['Error']['Code'] == 'ResourceNotFoundException':
-            # We can't find the resource that you asked for.
-            # Deal with the exception here, and/or rethrow at your discretion.
-            raise e
-    else:
-        # Decrypts secret using the associated KMS CMK.
-        # Depending on whether the secret is a string or binary, one of these fields will be populated.
-        if 'SecretString' in get_secret_value_response:
-            secret = get_secret_value_response['SecretString']
-        else:
-            secret = base64.b64decode(get_secret_value_response['SecretBinary'])
-
-    secret_load= json.loads(secret)  # returns the secret as dictionary
-    return (secret_load)
-
-
-def db_host():
-    client = boto3.client('rds', region_name=AWS_REGION)
-    db_instances = client.describe_db_instances()
-    rds_host = db_instances.get('DBInstances')[0].get('Endpoint').get('Address')
-    return (rds_host)
-
+from app_health import db_host , aws_secret_manager
 
 instance_schedule = {
     "Instances": [
@@ -63,33 +15,34 @@ instance_schedule = {
     ]
 }
 
+def db_connection():
+    db_info=  aws_secret_manager('kanduladblihi')
+    conn = psycopg2.connect(database=db_info['dbname'],
+                        host=db_host(),
+                        user=db_info['username'],
+                        password=db_info['password'],
+                        port=5432)
+    return (conn)
 
 def get_scheduling():
     try:
-        db_info=aws_secret_manager('kanduladblihi')
-        conn = psycopg2.connect(database=db_info['dbname'],
-                            host=db_host(),
-                            user=db_info['username'],
-                            password=db_info['password'],
-                            port=5432)
-        cursor = conn.cursor()
-        postgreSQL_select_Query = "select * from mobile where id = %s"
+        cursor = db_connection.conn()
+        postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
 
-        cursor.execute(postgreSQL_select_Query, (mobileID,))
-        mobile_records = cursor.fetchall()
-        for row in mobile_records:
-                print("Id = ", row[0], )
-                print("Model = ", row[1])
-                print("Price  = ", row[2])
+        cursor.execute(postgreSQL_select_Query)
+        records = cursor.fetchall()
+        for row in records:
+                print("Id ", row[0], )
+                print("DailyShutdownHour", row[1])
 
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
 
     finally:
         # closing database connection
-        if conn:
+        if db_connection.conn():
             cursor.close()
-            conn.close()
+            db_connection.conn().close()
             print("PostgreSQL connection is closed \n")
     # TODO: Implement a DB select query that gets all instance ids and their scheduled hours
     #       The returned data would be a in JSON format as show in the sample output below
