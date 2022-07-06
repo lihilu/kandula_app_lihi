@@ -31,7 +31,7 @@ def get_scheduling():
             for row in records:
                 print("rowwwwwwww",row)
                 single_instance={}
-                single_instance['instance_id'] = row[0]
+                single_instance['Id'] = row[0]
                 single_instance['DailyShutdownHour'] = row[1]
                 print ("single_instance", single_instance)
                 instance_schedule['Instances'].append(single_instance)
