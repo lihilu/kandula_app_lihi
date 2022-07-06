@@ -30,8 +30,8 @@ def get_scheduling():
         for row in records:
             print(row)
             single_instance={}
-            single_instance.append(instance_id = row[0] )
-            single_instance.append(shutdown_hour = row[0] )
+            single_instance['instance_id'] = row[0]
+            single_instance['shutdown_hour'] = row[0]
             instance_schedule['Instances'].append(single_instance)
         print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
@@ -39,10 +39,8 @@ def get_scheduling():
 
     finally:
         # closing database connection
-        if cur():
-            cur.close()
-            cur.close()
-            print("PostgreSQL connection is closed \n")
+        cur.close()
+        print("PostgreSQL connection is closed \n")
     # TODO: Implement a DB select query that gets all instance ids and their scheduled hours
     #       The returned data would be a in JSON format as show in the sample output below
     return instance_schedule
