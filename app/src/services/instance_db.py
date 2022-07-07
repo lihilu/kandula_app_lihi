@@ -5,7 +5,9 @@ import psycopg2
 from .app_health import db_host, aws_secret_manager
 from .instance_data import InstanceData
 
-instance_schedule = {"Instances": []}
+instance_schedule = {
+     "Instances": []
+ }
 AWS_REGION="us-east-1"
 ec2_client = client('ec2', region_name=AWS_REGION)
 response = ec2_client.describe_instances()
@@ -33,7 +35,7 @@ def get_scheduling():
                 single_instance['DailyShutdownHour'] = row[1]
           #      print ("single_instance", single_instance)
                 instance_schedule['Instances'].append(single_instance)
-           # print (instance_schedule)
+            print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
     return instance_schedule
@@ -44,14 +46,14 @@ def create_scheduling(instance_id, shutdown_hour):
     print("AWS" , instance_list_aws)
     instance_list_kandula= get_scheduling()
     print ("kandula" ,instance_list_kandula)
-    try:       
-        cursor=conn.cursor()
+    try:
         postgreSQL_select_Query = """
         insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
-        values (%s,%s)
+        values (%s,%S)
         """
         record_to_insert = (instance_id,shutdown_hour)
-        cursor.execute (postgreSQL_select_Query,record_to_insert)
+        cursor=conn.cursor()
+        cursor.execute(postgreSQL_select_Query,record_to_insert)
         conn.commit()
         count = cursor.rowcount
         print(count, "Record inserted successfully into mobile table")       
@@ -62,6 +64,13 @@ def create_scheduling(instance_id, shutdown_hour):
     except Exception:  # insert
         instance_schedule["Instances"].append({"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])})
         print("Instance {} will be shutdown every day when the hour is {}".format(instance_id, shutdown_hour))
+
+    finally:
+    # closing database connection.
+        if conn:
+            # cursor.close()
+            conn.close()
+            print("PostgreSQL connection is closed")
 
 def delete_scheduling(instance_id):
     # TODO: Implement a delete query to remove the instance ID from scheduling
