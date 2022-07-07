@@ -20,6 +20,11 @@ def get_scheduling():
      "Instances": []
  }
     try:
+        conn = psycopg2.connect(database=db_info['dbname'],
+                        host=db_host(),
+                        user=db_info['username'],
+                        password=db_info['password'],
+                        port=5432)
         postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
         cur= conn.cursor()
         cur.execute(postgreSQL_select_Query)
@@ -47,18 +52,23 @@ def get_scheduling():
 
 def create_scheduling(instance_id, shutdown_hour):
     instance_schedule = get_scheduling
+    conn = psycopg2.connect(database=db_info['dbname'],
+                        host=db_host(),
+                        user=db_info['username'],
+                        password=db_info['password'],
+                        port=5432)
     # instance_list_aws = response['Reservations'][0]['Instances']
     # print("AWS" , instance_list_aws)
     # instance_list_kandula= get_scheduling()
     # print ("kandula" ,instance_list_kandula)
     try:
-        postgreSQL_select_Query = """
+        postgreSQL_insert_Query = """
         insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
         values (%s,%s)
         """
         record_to_insert = (instance_id,shutdown_hour)
         cur= conn.cursor()
-        cur.execute(postgreSQL_select_Query, record_to_insert)
+        cur.execute(postgreSQL_insert_Query, record_to_insert)
         conn.commit()
      
         count = cur.rowcount
