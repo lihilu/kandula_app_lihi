@@ -8,15 +8,16 @@ from .instance_data import InstanceData
 instance_schedule = {
      "Instances": []
  }
-
-
-def get_scheduling():
-    db_info=  aws_secret_manager('kanduladblihi')
-    conn = psycopg2.connect(database=db_info['dbname'],
+AWS_REGION="us-east-1"
+ec2_client = client('ec2', region_name=AWS_REGION)
+response = ec2_client.describe_instances()
+db_info=  aws_secret_manager('kanduladblihi')
+conn = psycopg2.connect(database=db_info['dbname'],
                         host=db_host(),
                         user=db_info['username'],
                         password=db_info['password'],
                         port=5432)
+def get_scheduling():
     try:
         if conn:
             postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
@@ -48,8 +49,7 @@ def get_scheduling():
 
 
 def create_scheduling(instance_id, shutdown_hour):
-    x=InstanceData()
-    instance_list_aws = x.get_instance_list()
+    instance_list_aws = response['Reservations']['Instances'][0]
     print("AWS" , instance_list_aws)
     instance_list_kandula= get_scheduling()
     print ("kandula" ,instance_list_kandula)
@@ -67,12 +67,6 @@ def create_scheduling(instance_id, shutdown_hour):
         values (%s,%S)
         """
         record_to_insert = (instance_id,shutdown_hour)
-        db_info=  aws_secret_manager('kanduladblihi')
-        conn = psycopg2.connect(database=db_info['dbname'],
-                        host=db_host(),
-                        user=db_info['username'],
-                        password=db_info['password'],
-                        port=5432)
         cursor=conn.cursor()
         conn.commit()
         count = cursor.rowcount
