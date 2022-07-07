@@ -33,9 +33,9 @@ def get_scheduling():
                 single_instance={}
                 single_instance['Id'] = row[0]
                 single_instance['DailyShutdownHour'] = row[1]
-                print ("single_instance", single_instance)
+              #  print ("single_instance", single_instance)
                 instance_schedule['Instances'].append(single_instance)
-            print (instance_schedule)
+           # print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
 
