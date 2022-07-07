@@ -5,9 +5,7 @@ import psycopg2
 from .app_health import db_host, aws_secret_manager
 from .instance_data import InstanceData
 
-instance_schedule = {
-     "Instances": []
- }
+
 AWS_REGION="us-east-1"
 ec2_client = client('ec2', region_name=AWS_REGION)
 response = ec2_client.describe_instances()
@@ -18,6 +16,9 @@ conn = psycopg2.connect(database=db_info['dbname'],
                         password=db_info['password'],
                         port=5432)
 def get_scheduling():
+    instance_schedule = {
+     "Instances": []
+ }
     try:
         postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
         cur= conn.cursor()
@@ -57,8 +58,9 @@ def create_scheduling(instance_id, shutdown_hour):
         """
         record_to_insert = (instance_id,shutdown_hour)
         cursor=conn.cursor()
-        conn.commit()
         cursor.execute(postgreSQL_select_Query, record_to_insert)
+        conn.commit()
+     
         count = cursor.rowcount
         print(count, "Record inserted successfully into mobile table")       
         cursor.close()
