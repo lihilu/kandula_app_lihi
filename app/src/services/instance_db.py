@@ -66,7 +66,9 @@ def create_scheduling(instance_id, shutdown_hour):
         cursor.execute(postgreSQL_select_Query, record_to_insert)
         count = cursor.rowcount
         print(count, "Record inserted successfully into mobile table")       
-
+        cursor.close()
+        conn.close()
+        print("PostgreSQL connection is closed")
         index = [i['Id'] for i in instance_schedule["Instances"]].index(instance_id)
         instance_schedule["Instances"][index] = {"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])}
         print("Instance {} will be shutdown was updated to the hour {}".format(instance_id, shutdown_hour))
@@ -74,12 +76,6 @@ def create_scheduling(instance_id, shutdown_hour):
         instance_schedule["Instances"].append({"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])})
         print("Instance {} will be shutdown every day when the hour is {}".format(instance_id, shutdown_hour))
 
-    finally:
-    # closing database connection.
-        if conn:
-            cursor.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
 
 def delete_scheduling(instance_id):
     # TODO: Implement a delete query to remove the instance ID from scheduling
