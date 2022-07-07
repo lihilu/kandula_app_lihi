@@ -19,22 +19,21 @@ conn = psycopg2.connect(database=db_info['dbname'],
                         port=5432)
 def get_scheduling():
     try:
-        if conn:
-            postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
-            cur= conn.cursor()
-            cur.execute(postgreSQL_select_Query)
-            records = cur.fetchall()
+        postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
+        cur= conn.cursor()
+        cur.execute(postgreSQL_select_Query)
+        records = cur.fetchall()
           #  print (records)
         #    instance_schedule={'Instances':[]}
            # print ("emptyyyyy",instance_schedule)
-            for row in records:
-                if row[0] == 'None':
-                    continue
-                single_instance={}
-                single_instance['Id'] = row[0]
-                single_instance['DailyShutdownHour'] = row[1]
+        for row in records:
+            if row[0] == 'None':
+                continue
+            single_instance={}
+            single_instance['Id'] = row[0]
+            single_instance['DailyShutdownHour'] = row[1]
               #  print ("single_instance", single_instance)
-                instance_schedule['Instances'].append(single_instance)
+            instance_schedule['Instances'].append(single_instance)
         cur.close()
         conn.close()
         print("PostgreSQL connection is closed")
