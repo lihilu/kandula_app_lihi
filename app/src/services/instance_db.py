@@ -50,7 +50,7 @@ def create_scheduling(instance_id, shutdown_hour):
     
     try:
         for instance in instance_list_aws:
-            print ("fffffffffffffffffffffff" , instance)
+            print ("fffffffffffffffffffffff" , instance['InstanceId'])
             if instance['InstanceId'] ==instance_id:
                print ("instance in AWS ", instance['InstanceId'] ) 
                for instance in instance_list_kandula:
