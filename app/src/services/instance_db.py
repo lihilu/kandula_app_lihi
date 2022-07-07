@@ -33,15 +33,24 @@ def get_scheduling():
                 single_instance={}
                 single_instance['Id'] = row[0]
                 single_instance['DailyShutdownHour'] = row[1]
-          #      print ("single_instance", single_instance)
+                print ("single_instance", single_instance)
                 instance_schedule['Instances'].append(single_instance)
             print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
+
+    finally:
+    # closing database connection.
+        if conn:
+            cur.close()
+            conn.close()
+            print("PostgreSQL connection is closed")
     return instance_schedule
 
 
 def create_scheduling(instance_id, shutdown_hour):
+    instance_schedule = {
+     "Instances": []}
     instance_list_aws = response['Reservations'][0]['Instances']
     print("AWS" , instance_list_aws)
     instance_list_kandula= get_scheduling()
@@ -53,7 +62,6 @@ def create_scheduling(instance_id, shutdown_hour):
         """
         record_to_insert = (instance_id,shutdown_hour)
         cursor=conn.cursor()
-        cursor.execute(postgreSQL_select_Query,record_to_insert)
         conn.commit()
         count = cursor.rowcount
         print(count, "Record inserted successfully into mobile table")       
@@ -68,7 +76,7 @@ def create_scheduling(instance_id, shutdown_hour):
     finally:
     # closing database connection.
         if conn:
-            # cursor.close()
+            cursor.close()
             conn.close()
             print("PostgreSQL connection is closed")
 
