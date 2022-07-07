@@ -91,6 +91,11 @@ def delete_scheduling(instance_id):
     instance_schedule = get_scheduling
     # TODO: Implement a delete query to remove the instance ID from scheduling
     try:
+        for instance in instance_schedule:
+            if instance_schedule['instance_id'] == instance_id:
+                print ("need to delete")
+            else:
+                print ("its time for kaki")
         index = [k['Id'] for k in instance_schedule["Instances"]].index(instance_id)
         instance_schedule["Instances"].pop(index)
         print("Instance {} was removed from scheduling".format(instance_id))
