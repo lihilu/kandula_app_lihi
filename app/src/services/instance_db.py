@@ -69,9 +69,7 @@ def create_scheduling(instance_id, shutdown_hour):
                         print(count, "Record inserted successfully into table")
                         break
                     else:
-                        print ("if 1")
-            else:
-                print ("if 2")        
+                        print ("if 1")      
 
         
 
