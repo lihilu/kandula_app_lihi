@@ -51,17 +51,22 @@ def create_scheduling(instance_id, shutdown_hour):
         for instance in instance_list_aws:
             print ("fffffffffffffffffffffff" , instance)
             if instance['InstanceId'] ==instance_id:
-               print ("instance in AWS ", instance_id ) 
+               print ("instance in AWS ", instance['InstanceId'] ) 
                for instance in instance_list_kandula:
-                    if instance ==instance_id:
+                    if instance['Id'] ==instance_id:
                         print ("instance in kandula ", instance_id)
                         break
+                    else:
+                        print ("if 1")
+            else:
+                print ("if 2")        
+        cursor=conn.cursor()
         postgreSQL_select_Query = """
         insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
-        values (%s,%S)
+        values (%s,%s)
         """
         record_to_insert = (instance_id,shutdown_hour)
-        cursor=conn.cursor()
+        cursor.execute (postgreSQL_select_Query,record_to_insert)
         conn.commit()
         count = cursor.rowcount
         print(count, "Record inserted successfully into mobile table")       
