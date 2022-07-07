@@ -44,33 +44,21 @@ def get_scheduling():
 
 def create_scheduling(instance_id, shutdown_hour):
     instance_list_aws = response['Reservations'][0]['Instances']
-    print("AWS" , instance_list_aws)
+    #print("AWS" , instance_list_aws)
     instance_list_kandula= get_scheduling()
-    print ("kandula" ,instance_list_kandula)
+    #print ("kandula" ,instance_list_kandula)
     
     try:
-        for instance in instance_list_aws:
-            print ("fffffffffffffffffffffff" , instance['InstanceId'])
-            if instance['InstanceId'] ==instance_id:
-               print ("instance in AWS ", instance['InstanceId'] ) 
-               for instance in instance_list_kandula:
-                    print (instance['Instance'])
-                    if instance['Id'] !=instance_id: #insert
-                        print ("instance in kandula ", instance['Id'])
-                        cursor=conn.cursor()
-                        postgreSQL_select_Query = """
-                        insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
-                        values (%s,%s)
-                        """
-                        record_to_insert = (instance_id,shutdown_hour)
-                        cursor.execute (postgreSQL_select_Query,record_to_insert)
-                        conn.commit()
-                        count = cursor.rowcount
-                        print(count, "Record inserted successfully into table")
-                        break
-                    else:
-                        print ("if 1")      
-
+        cursor=conn.cursor()
+        postgreSQL_select_Query = """
+        insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
+        values (%s,%s)
+        """
+        record_to_insert = (instance_id,shutdown_hour)
+        cursor.execute (postgreSQL_select_Query,record_to_insert)
+        conn.commit()
+        count = cursor.rowcount
+        print(count, "Record inserted successfully into table")
         
 
         # index = [i['Id'] for i in instance_schedule["Instances"]].index(instance_id)
