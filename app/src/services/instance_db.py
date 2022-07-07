@@ -92,7 +92,7 @@ def delete_scheduling(instance_id):
     # TODO: Implement a delete query to remove the instance ID from scheduling
     try:
         for instance in instance_schedule:
-            if instance_schedule['instance_id'] == instance_id:
+            if instance['instance_id'] == instance_id:
                 print ("need to delete")
             else:
                 print ("its time for kaki")
