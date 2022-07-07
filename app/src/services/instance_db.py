@@ -1,11 +1,9 @@
 from boto3 import client
 from botocore.exceptions import ClientError
 import json
-import botocore 
 import psycopg2
-import base64
-import boto3
 from .app_health import db_host, aws_secret_manager
+from .instance_data import get_instance_list
 
 instance_schedule = {
      "Instances": []
@@ -44,14 +42,39 @@ def get_scheduling():
         # closing database connection
         cur.close()
         print("PostgreSQL connection is closed \n")
-    # TODO: Implement a DB select query that gets all instance ids and their scheduled hours
-    #       The returned data would be a in JSON format as show in the sample output below
     return instance_schedule
 
 
 def create_scheduling(instance_id, shutdown_hour):
-    # TODO: Implement a DB insert that creates the instance ID and the chosen hour in DB
-    try:  # update
+    instance_list_aws = instance_schedule.get_instance_list()
+    print("AWS" , instance_list_aws)
+    instance_list_kandula= get_scheduling()
+    print ("kandula" ,instance_list_kandula)
+    try:
+        for instance in instance_list_aws:
+            print (instance)
+            if instance ==instance_id:
+               print ("instance in AWS ", instance_id ) 
+               for instance in instance_list_kandula:
+                    if instance ==instance_id:
+                        print ("instance in kandula ", instance_id)
+                        break
+        postgreSQL_select_Query = """
+        insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
+        values (%s,%S)
+        """
+        record_to_insert = (instance_id,shutdown_hour)
+        db_info=  aws_secret_manager('kanduladblihi')
+        conn = psycopg2.connect(database=db_info['dbname'],
+                        host=db_host(),
+                        user=db_info['username'],
+                        password=db_info['password'],
+                        port=5432)
+        cursor=conn.cursor()
+        conn.commit()
+        count = cursor.rowcount
+        print(count, "Record inserted successfully into mobile table")       
+        
         index = [i['Id'] for i in instance_schedule["Instances"]].index(instance_id)
         instance_schedule["Instances"][index] = {"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])}
         print("Instance {} will be shutdown was updated to the hour {}".format(instance_id, shutdown_hour))
