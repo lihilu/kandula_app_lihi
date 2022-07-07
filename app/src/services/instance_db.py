@@ -45,8 +45,7 @@ def get_scheduling():
 
 
 def create_scheduling(instance_id, shutdown_hour):
-    instance_schedule = {
-     "Instances": []}
+    instance_schedule = get_scheduling
     instance_list_aws = response['Reservations'][0]['Instances']
     print("AWS" , instance_list_aws)
     instance_list_kandula= get_scheduling()
