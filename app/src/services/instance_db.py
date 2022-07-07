@@ -24,16 +24,16 @@ def get_scheduling():
             cur= conn.cursor()
             cur.execute(postgreSQL_select_Query)
             records = cur.fetchall()
-            print (records)
+          #  print (records)
         #    instance_schedule={'Instances':[]}
-            print ("emptyyyyy",instance_schedule)
+           # print ("emptyyyyy",instance_schedule)
             for row in records:
                 if row[0] == 'None':
                     continue
                 single_instance={}
                 single_instance['Id'] = row[0]
                 single_instance['DailyShutdownHour'] = row[1]
-                print ("single_instance", single_instance)
+          #      print ("single_instance", single_instance)
                 instance_schedule['Instances'].append(single_instance)
             print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
@@ -82,7 +82,7 @@ def create_scheduling(instance_id, shutdown_hour):
     finally:
     # closing database connection.
         if conn:
-            cursor.close()
+            # cursor.close()
             conn.close()
             print("PostgreSQL connection is closed")
 
