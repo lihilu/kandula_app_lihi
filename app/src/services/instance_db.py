@@ -4,6 +4,7 @@ import json
 import psycopg2
 from .app_health import db_host, aws_secret_manager
 from .instance_data import InstanceData
+import datetime
 
 
 AWS_REGION="us-east-1"
@@ -62,11 +63,13 @@ def create_scheduling(instance_id, shutdown_hour):
     # instance_list_kandula= get_scheduling()
     # print ("kandula" ,instance_list_kandula)
     try:
+        dt = datetime.datetime.strptime(shutdown_hour, "%H:%M")
+
         postgreSQL_insert_Query = """
         insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
         values (%s,%s)
         """
-        record_to_insert = (instance_id,shutdown_hour)
+        record_to_insert = (instance_id,dt.hour)
         cur= conn.cursor()
         cur.execute(postgreSQL_insert_Query, record_to_insert)
         conn.commit()
