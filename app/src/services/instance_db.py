@@ -5,8 +5,7 @@ import psycopg2
 from .app_health import db_host, aws_secret_manager
 from .instance_data import InstanceData
 
-instance_schedule = {
-     "Instances": []}
+instance_schedule = {"Instances": []}
 AWS_REGION="us-east-1"
 ec2_client = client('ec2', region_name=AWS_REGION)
 response = ec2_client.describe_instances()
@@ -17,9 +16,6 @@ conn = psycopg2.connect(database=db_info['dbname'],
                         password=db_info['password'],
                         port=5432)
 def get_scheduling():
-    instance_schedule = {
-     "Instances": []
- }
     try:
         if conn:
             postgreSQL_select_Query = "select ins.instance_id, ins.shutdown_time  from kanduladb.kanduladb.instances_scheduler ins ORDER BY ins.shutdown_time desc limit 20"
@@ -45,11 +41,10 @@ def get_scheduling():
 
 def create_scheduling(instance_id, shutdown_hour):
     instance_list_aws = response['Reservations'][0]['Instances']
-    #print("AWS" , instance_list_aws)
+    print("AWS" , instance_list_aws)
     instance_list_kandula= get_scheduling()
-    #print ("kandula" ,instance_list_kandula)
-    
-    try:
+    print ("kandula" ,instance_list_kandula)
+    try:       
         cursor=conn.cursor()
         postgreSQL_select_Query = """
         insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
@@ -59,15 +54,14 @@ def create_scheduling(instance_id, shutdown_hour):
         cursor.execute (postgreSQL_select_Query,record_to_insert)
         conn.commit()
         count = cursor.rowcount
-        print(count, "Record inserted successfully into table")
-        
+        print(count, "Record inserted successfully into mobile table")       
 
         index = [i['Id'] for i in instance_schedule["Instances"]].index(instance_id)
         instance_schedule["Instances"][index] = {"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])}
         print("Instance {} will be shutdown was updated to the hour {}".format(instance_id, shutdown_hour))
     except Exception:  # insert
-         instance_schedule["Instances"].append({"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])})
-         print("Instance {} will be shutdown every day when the hour is {}".format(instance_id, shutdown_hour))
+        instance_schedule["Instances"].append({"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])})
+        print("Instance {} will be shutdown every day when the hour is {}".format(instance_id, shutdown_hour))
 
 def delete_scheduling(instance_id):
     # TODO: Implement a delete query to remove the instance ID from scheduling
