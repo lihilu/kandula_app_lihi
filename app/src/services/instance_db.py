@@ -97,7 +97,7 @@ def delete_scheduling(instance_id):
         record_to_insert = (instance_id)
         print ("delete query",postgreSQL_delete_Query)
         cur= conn.cursor()
-        cur.execute(postgreSQL_delete_Query, record_to_insert)
+        cur.execute(postgreSQL_delete_Query, (record_to_insert,))
         conn.commit()
         cur.close()
         conn.close()
