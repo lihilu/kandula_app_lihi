@@ -16,10 +16,11 @@ conn = psycopg2.connect(database=db_info['dbname'],
                         user=db_info['username'],
                         password=db_info['password'],
                         port=5432)
+
+
+
 def get_scheduling():
-    instance_schedule = {
-     "Instances": []
- }
+    instance_schedule = {"Instances": []}
     try:
         conn = psycopg2.connect(database=db_info['dbname'],
                         host=db_host(),
@@ -53,6 +54,7 @@ def get_scheduling():
 
 def create_scheduling(instance_id, shutdown_hour):
     instance_schedule = get_scheduling
+
     conn = psycopg2.connect(database=db_info['dbname'],
                         host=db_host(),
                         user=db_info['username'],
@@ -63,8 +65,9 @@ def create_scheduling(instance_id, shutdown_hour):
     # instance_list_kandula= get_scheduling()
     # print ("kandula" ,instance_list_kandula)
     try:
+        print ("instance before", instance_schedule)
         dt = datetime.datetime.strptime(shutdown_hour, "%H:%M")
-
+        print ("time", dt)
         postgreSQL_insert_Query = """
         insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
         values (%s,%s)
@@ -89,8 +92,17 @@ def create_scheduling(instance_id, shutdown_hour):
 
 def delete_scheduling(instance_id):
     instance_schedule = get_scheduling
-    # TODO: Implement a delete query to remove the instance ID from scheduling
     try:
+        postgreSQL_delete_Query = """DELETE FROM kanduladb.kanduladb.instances_scheduler WHERE id = %s;"""
+        record_to_insert = (instance_id)
+        print ("delete query",postgreSQL_delete_Query)
+        cur= conn.cursor()
+        cur.execute(postgreSQL_delete_Query, record_to_insert)
+        conn.commit()
+        cur.close()
+        conn.close()
+    # TODO: Implement a delete query to remove the instance ID from scheduling
+   
         index = [k['Id'] for k in instance_schedule["Instances"]].index(instance_id)
         instance_schedule["Instances"].pop(index)
         print("Instance {} was removed from scheduling".format(instance_id))
