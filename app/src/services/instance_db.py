@@ -63,6 +63,7 @@ def create_scheduling(instance_id, shutdown_hour):
         record_to_insert = (instance_id,shutdown_hour)
         cursor=conn.cursor()
         conn.commit()
+        cursor.execute(postgreSQL_select_Query, record_to_insert)
         count = cursor.rowcount
         print(count, "Record inserted successfully into mobile table")       
 
