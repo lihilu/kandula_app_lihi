@@ -5,7 +5,8 @@ import psycopg2
 from .app_health import db_host, aws_secret_manager
 from .instance_data import InstanceData
 
-
+instance_schedule = {
+     "Instances": []}
 AWS_REGION="us-east-1"
 ec2_client = client('ec2', region_name=AWS_REGION)
 response = ec2_client.describe_instances()
@@ -61,11 +62,11 @@ def create_scheduling(instance_id, shutdown_hour):
         print(count, "Record inserted successfully into table")
         
 
-        # index = [i['Id'] for i in instance_schedule["Instances"]].index(instance_id)
-        # instance_schedule["Instances"][index] = {"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])}
-        # print("Instance {} will be shutdown was updated to the hour {}".format(instance_id, shutdown_hour))
+        index = [i['Id'] for i in instance_schedule["Instances"]].index(instance_id)
+        instance_schedule["Instances"][index] = {"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])}
+        print("Instance {} will be shutdown was updated to the hour {}".format(instance_id, shutdown_hour))
     except Exception:  # insert
-    #     instance_schedule["Instances"].append({"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])})
+         instance_schedule["Instances"].append({"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])})
          print("Instance {} will be shutdown every day when the hour is {}".format(instance_id, shutdown_hour))
 
 def delete_scheduling(instance_id):
