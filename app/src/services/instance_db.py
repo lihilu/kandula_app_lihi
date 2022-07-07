@@ -38,13 +38,6 @@ def get_scheduling():
             print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
-
-    finally:
-    # closing database connection.
-        if conn:
-            cur.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
     return instance_schedule
 
 
@@ -78,13 +71,6 @@ def create_scheduling(instance_id, shutdown_hour):
     except Exception:  # insert
         instance_schedule["Instances"].append({"Id": instance_id, "DailyShutdownHour": int(shutdown_hour[0:2])})
         print("Instance {} will be shutdown every day when the hour is {}".format(instance_id, shutdown_hour))
-
-    finally:
-    # closing database connection.
-        if conn:
-            # cursor.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
 
 def delete_scheduling(instance_id):
     # TODO: Implement a delete query to remove the instance ID from scheduling
