@@ -47,23 +47,23 @@ def get_scheduling():
 
 def create_scheduling(instance_id, shutdown_hour):
     instance_schedule = get_scheduling
-    instance_list_aws = response['Reservations'][0]['Instances']
-    print("AWS" , instance_list_aws)
-    instance_list_kandula= get_scheduling()
-    print ("kandula" ,instance_list_kandula)
+    # instance_list_aws = response['Reservations'][0]['Instances']
+    # print("AWS" , instance_list_aws)
+    # instance_list_kandula= get_scheduling()
+    # print ("kandula" ,instance_list_kandula)
     try:
         postgreSQL_select_Query = """
         insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
         values (%s,%S)
         """
         record_to_insert = (instance_id,shutdown_hour)
-        cursor=conn.cursor()
-        cursor.execute(postgreSQL_select_Query, record_to_insert)
+        cur= conn.cursor()
+        cur.execute(postgreSQL_select_Query, record_to_insert)
         conn.commit()
      
-        count = cursor.rowcount
+        count = cur.rowcount
         print(count, "Record inserted successfully into mobile table")       
-        cursor.close()
+        cur.close()
         conn.close()
         print("PostgreSQL connection is closed")
         index = [i['Id'] for i in instance_schedule["Instances"]].index(instance_id)
