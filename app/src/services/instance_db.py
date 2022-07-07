@@ -93,7 +93,7 @@ def create_scheduling(instance_id, shutdown_hour):
 def delete_scheduling(instance_id):
     instance_schedule = get_scheduling
     try:
-        postgreSQL_delete_Query = """DELETE FROM kanduladb.kanduladb.instances_scheduler WHERE id = %s;"""
+        postgreSQL_delete_Query = """DELETE FROM kanduladb.kanduladb.instances_scheduler WHERE instance_id = %s;"""
         record_to_insert = (instance_id)
         print ("delete query",postgreSQL_delete_Query)
         cur= conn.cursor()
