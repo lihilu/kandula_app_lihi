@@ -35,7 +35,7 @@ def get_scheduling():
                 single_instance['DailyShutdownHour'] = row[1]
           #      print ("single_instance", single_instance)
                 instance_schedule['Instances'].append(single_instance)
-            print (instance_schedule)
+           # print (instance_schedule)
     except (Exception, psycopg2.Error) as error:
         print("Error fetching data from PostgreSQL table", error)
     return instance_schedule
@@ -43,12 +43,12 @@ def get_scheduling():
 
 def create_scheduling(instance_id, shutdown_hour):
     instance_list_aws = response['Reservations'][0]['Instances']
-    print("AWS" , instance_list_aws)
+    print("AWS" , instance_list_aws['InstanceId'])
     instance_list_kandula= get_scheduling()
-    print ("kandula" ,instance_list_kandula)
+    print ("kandula" ,instance_list_kandula['id'])
     try:
-        for instance['InstanceId'] in instance_list_aws:
-            print (instance)
+        for instance in instance_list_aws['InstanceId']:
+            print ("fffffffffffffffffffffff" , instance)
             if instance ==instance_id:
                print ("instance in AWS ", instance_id ) 
                for instance in instance_list_kandula:
