@@ -3,7 +3,7 @@ from botocore.exceptions import ClientError
 import json
 import psycopg2
 from .app_health import db_host, aws_secret_manager
-from .instance_data import get_instance_list
+from .instance_data import InstanceData
 
 instance_schedule = {
      "Instances": []
@@ -48,7 +48,7 @@ def get_scheduling():
 
 
 def create_scheduling(instance_id, shutdown_hour):
-    instance_list_aws = instance_schedule.get_instance_list()
+    instance_list_aws = InstanceData.get_instance_list()
     print("AWS" , instance_list_aws)
     instance_list_kandula= get_scheduling()
     print ("kandula" ,instance_list_kandula)
