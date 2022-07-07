@@ -54,7 +54,7 @@ def create_scheduling(instance_id, shutdown_hour):
     try:
         postgreSQL_select_Query = """
         insert into kanduladb.kanduladb.instances_scheduler (instance_id , shutdown_time)
-        values (%s,%S)
+        values (%s,%s)
         """
         record_to_insert = (instance_id,shutdown_hour)
         cur= conn.cursor()
