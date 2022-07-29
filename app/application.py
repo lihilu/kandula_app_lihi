@@ -9,9 +9,11 @@ from .containers import Container
 from .utils.app_logging import init_logging
 from .views import views
 from .views.views import InstanceAPI
+from prometheus_flask_exporter import PrometheusMetrics
 
 
 def create_app() -> Flask:
+    PrometheusMetrics(app)
     container = Container()
     container.config.from_yaml('config.yml')
     container.config.aws_access_key_id.from_env('AWS_ACCESS_KEY_ID')
@@ -53,3 +55,5 @@ def create_app() -> Flask:
     bootstrap.init_app(app)
 
     return app
+
+   
