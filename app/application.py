@@ -13,7 +13,7 @@ from prometheus_flask_exporter import PrometheusMetrics
 
 
 def create_app() -> Flask:
-    PrometheusMetrics(app)
+  
     container = Container()
     container.config.from_yaml('config.yml')
     container.config.aws_access_key_id.from_env('AWS_ACCESS_KEY_ID')
@@ -53,7 +53,8 @@ def create_app() -> Flask:
 
     bootstrap = Bootstrap()
     bootstrap.init_app(app)
-
+    PrometheusMetrics(app)
     return app
 
+    
    
