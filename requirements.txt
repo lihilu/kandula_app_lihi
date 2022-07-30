@@ -15,5 +15,7 @@ yamllint
 psycopg2-binary
 pybase64
 prometheus_flask_exporter
+prometheus_client
+
 # boto3
 # botocore

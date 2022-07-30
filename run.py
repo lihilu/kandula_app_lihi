@@ -1,5 +1,6 @@
 from os import environ
 from app.application import create_app
+from prometheus_client import start_http_server, Counter, Summary
 
 app = create_app()
 
@@ -14,4 +15,5 @@ def validate_mandatory_env_variables():
 
 if __name__ == "__main__":
     validate_mandatory_env_variables()
+    start_http_server(9100)
     app.run(host='0.0.0.0', use_evalex=False)
