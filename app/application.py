@@ -23,7 +23,7 @@ def create_app() -> Flask:
 
     app = Flask(__name__)
     app.secret_key = os.environ.get('SECRET_KEY')
-    PrometheusMetrics(app)
+    
     app.container = container
 
     app.add_url_rule('/', 'home', views.home, methods=['GET'])
@@ -53,7 +53,7 @@ def create_app() -> Flask:
 
     bootstrap = Bootstrap()
     bootstrap.init_app(app)
-    
+    PrometheusMetrics(app)
     return app
 
     
