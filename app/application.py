@@ -53,7 +53,7 @@ def create_app() -> Flask:
 
     bootstrap = Bootstrap()
     bootstrap.init_app(app)
-    PrometheusMetrics(app)
+    metrics = PrometheusMetrics(app)
     return app
 
     
