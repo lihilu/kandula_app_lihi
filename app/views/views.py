@@ -9,6 +9,7 @@ from app.src.services.instance_actions import InstanceActions
 from app.src.services.instance_data import InstanceData
 from app.containers import Container
 
+from prometheus_flask_exporter import PrometheusMetrics
 from botocore.exceptions import ClientError
 
 from flask.views import MethodView
@@ -64,7 +65,10 @@ def health():
 
 
 def metrics():
-    return render_template('metrics.html', title='metrics', )
+    metrics = PrometheusMetrics(app)
+    return metrics
+    
+   # render_template('metrics.html', title='metrics', )
 
 
 @inject

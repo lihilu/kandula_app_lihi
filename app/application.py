@@ -9,7 +9,7 @@ from .containers import Container
 from .utils.app_logging import init_logging
 from .views import views
 from .views.views import InstanceAPI
-from prometheus_flask_exporter import PrometheusMetrics
+
 
 
 def create_app() -> Flask:
@@ -53,7 +53,6 @@ def create_app() -> Flask:
 
     bootstrap = Bootstrap()
     bootstrap.init_app(app)
-    metrics = PrometheusMetrics(app)
     return app
 
     
