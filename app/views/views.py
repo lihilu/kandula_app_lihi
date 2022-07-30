@@ -84,3 +84,4 @@ def scheduler():
     scheduled_instances = instance_shutdown_scheduling.get_scheduled_instances()
     return render_template('scheduler.html', title='Scheduling',
                            scheduled_instances=scheduled_instances["Instances"])
+
