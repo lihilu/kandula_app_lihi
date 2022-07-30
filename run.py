@@ -15,3 +15,11 @@ def validate_mandatory_env_variables():
 if __name__ == "__main__":
     validate_mandatory_env_variables()
     app.run(host='0.0.0.0', use_evalex=False)
+
+count = 0
+@app.route("/count")
+def home():
+    global count
+    print(count)
+    count += 1
+    return "testing"
