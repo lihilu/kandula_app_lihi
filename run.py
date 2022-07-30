@@ -15,5 +15,5 @@ def validate_mandatory_env_variables():
 
 if __name__ == "__main__":
     validate_mandatory_env_variables()
-    start_http_server(9101)
-    app.run(host='0.0.0.0', use_evalex=False)
+    start_http_server(5000)
+    app.run(host='0.0.0.0', use_evalex=False, debug=False)
