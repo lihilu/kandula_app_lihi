@@ -13,8 +13,6 @@ from prometheus_client import start_http_server, Counter, Summary
 
 from prometheus_flask_exporter import PrometheusMetrics
 
-call_metric = Counter('opsschool_monitor_flask_main_count', 'Number of visits to main', [ "service", "endpoint" ])
-time_metric = Summary('opsschool_monitor_flask_request_processing_seconds', 'Time spent processing request', [ "method" ])
 
 def create_app() -> Flask:
  
