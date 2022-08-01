@@ -52,59 +52,59 @@ class InstanceAPI(MethodView):
         return redirect(url_for('instances'))
 
 
-home_time = time_metric.label(endpoint='home')
+home_time = time_metric.labels(endpoint='home')
 @home_time.time()
 def home():
     logger.info("Home view")
-    call_metric.label(method='GET',endpoint='home').inc(1)
+    call_metric.labels(method='GET',endpoint='home').inc(1)
     return render_template('home.html', title='Welcome to Kandula')
 
-about_time= time_metric.label(endpoint='about')
+about_time= time_metric.labels(endpoint='about')
 @about_time.time()
 def about():
-    call_metric.label(method='GET',endpoint='about').inc(1)
+    call_metric.labels(method='GET',endpoint='about').inc(1)
     return render_template('about.html', title='About')
 
-health_time = time_metric.label(endpoint='health')
+health_time = time_metric.labels(endpoint='health')
 @health_time.time()
 def health():
-    call_metric.label(method='GET',endpoint='health').inc(1)
+    call_metric.labels(method='GET',endpoint='health').inc(1)
     health_metrics, is_app_healthy = app_health.get_app_health()
 
     return render_template('health.html', title='Application Health',
                            healthchecks=health_metrics), 200 if is_app_healthy else 500
 
 
-metrics_time = time_metric.label(endpoint='metrics')
+metrics_time = time_metric.labels(endpoint='metrics')
 @metrics_time.time()
 def metrics():
-    call_metric.label(method='GET',endpoint='metrics').inc(1)
+    call_metric.labels(method='GET',endpoint='metrics').inc(1)
     return render_template('metrics.html', title='metrics', )
 
 
-instances_time= time_metric.label(endpoint='instances')
+instances_time= time_metric.labels(endpoint='instances')
 @instances_time.time()
 @inject
 def instances(instance_data: InstanceData = Provide[Container.instance_data]):
     instances_response = instance_data.get_instances()
-    call_metric.label(method='GET',endpoint='instances').inc(1)
+    call_metric.labels(method='GET',endpoint='instances').inc(1)
     return render_template('instances.html', title='Instances',
                            instances=instances_response['Instances'])
 @inject
 def get_instance_list(instance_data: InstanceData = Provide[Container.instance_data]):
     instances_response = instance_data.get_instance_list()
-    call_metric.label(method='GET',endpoint='instances_list').inc(1)
+    call_metric.labels(method='GET',endpoint='instances_list').inc(1)
     return instances_response
 
 
-scheduler_time= time_metric.label(endpoint='scheduler')
+scheduler_time= time_metric.labels(endpoint='scheduler')
 @scheduler_time.time()
 def scheduler():
     if request.method == 'POST':
         instance_shutdown_scheduling.handle_instance(request.form)
 
     scheduled_instances = instance_shutdown_scheduling.get_scheduled_instances()
-    call_metric.label(method='GET',endpoint='scheduler').inc(1)
+    call_metric.labels(method='GET',endpoint='scheduler').inc(1)
     return render_template('scheduler.html', title='Scheduling',
                            scheduled_instances=scheduled_instances["Instances"])
 
