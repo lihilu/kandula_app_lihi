@@ -3,7 +3,6 @@ import os
 from datetime import datetime
 
 from flask import Flask, request
-from prometheus_flask_exporter import PrometheusMetrics
 from flask_bootstrap import Bootstrap4
 
 from .containers import Container
@@ -56,7 +55,6 @@ def create_app() -> Flask:
 
     bootstrap = Bootstrap4()
     bootstrap.init_app(app)
-    metrics = PrometheusMetrics(app)
     return app
 
     
