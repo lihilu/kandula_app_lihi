@@ -9,7 +9,6 @@ from .containers import Container
 from .utils.app_logging import init_logging
 from .views import views
 from .views.views import InstanceAPI
-from prometheus_client import start_http_server, Counter, Summary
 from prometheus_flask_exporter import PrometheusMetrics
 
 
