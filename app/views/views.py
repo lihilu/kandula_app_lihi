@@ -3,7 +3,8 @@
 from flask import render_template, flash, url_for, request
 from dependency_injector.wiring import inject, Provide
 from werkzeug.utils import redirect
-
+from prometheus_client import start_http_server, Counter, Summary
+import logging
 from app.src.services import app_health, instance_shutdown_scheduling
 from app.src.services.instance_actions import InstanceActions
 from app.src.services.instance_data import InstanceData
@@ -12,8 +13,7 @@ from app.containers import Container
 from botocore.exceptions import ClientError
 
 from flask.views import MethodView
-from prometheus_client import start_http_server, Counter, Summary
-import logging
+
 
 logger = logging.getLogger()
 
