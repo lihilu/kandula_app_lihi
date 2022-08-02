@@ -2,7 +2,8 @@
 import os
 from datetime import datetime
 
-from flask import Flask
+from flask import Flask, request
+from prometheus_flask_exporter import PrometheusMetrics
 from flask_bootstrap import Bootstrap4
 
 from .containers import Container
@@ -10,7 +11,7 @@ from .utils.app_logging import init_logging
 from .views import views
 from .views.views import InstanceAPI
 
-from prometheus-flask-exporter import PrometheusMetrics
+
 
 
 
