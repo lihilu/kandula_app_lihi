@@ -3,6 +3,7 @@ from os import environ
 import argparse
 import logging
 from prometheus_client import start_http_server
+from sqlalchemy import true
 
 
 parser = argparse.ArgumentParser()
@@ -39,4 +40,4 @@ def validate_mandatory_env_variables():
 if __name__ == "__main__":
     validate_mandatory_env_variables()
     start_http_server(9100)
-    app.run(host='0.0.0.0', use_evalex=False, debug=False)
+    app.run(host='0.0.0.0', use_evalex=False, debug=true)
