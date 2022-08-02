@@ -14,7 +14,7 @@ flake8-colors
 yamllint
 psycopg2-binary
 pybase64
-prometheus_flask_exporter
+prometheus-flask-exporter
 prometheus_client
 create_app
 # boto3
