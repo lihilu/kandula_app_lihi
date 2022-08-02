@@ -12,7 +12,7 @@ from app.containers import Container
 
 from botocore.exceptions import ClientError
 
-from .views import MethodView
+from flask.views import MethodView
 
 
 logger = logging.getLogger()
