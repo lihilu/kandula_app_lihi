@@ -3,12 +3,13 @@ import os
 from datetime import datetime
 
 from flask import Flask
-from flask_bootstrap import Bootstrap4
+from flask_bootstrap import Bootstrap
 
 from .containers import Container
 from .utils.app_logging import init_logging
 from .views import views
 from .views.views import InstanceAPI
+
 from prometheus_flask_exporter import PrometheusMetrics
 
 
