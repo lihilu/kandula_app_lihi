@@ -13,6 +13,9 @@ spec:
          - containerPort: 5000
            name: http
            protocol: TCP
+         - containerPort: 9100
+           name: metrics
+           protocol: TCP
        env:
          - name: FLASK_ENV
            value: development
